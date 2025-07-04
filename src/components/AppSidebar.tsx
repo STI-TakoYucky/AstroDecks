@@ -31,16 +31,16 @@ export function AppSidebar() {
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel className="text-2xl font-bold text-black">
-            Flashcard App
+            AstroDecks
           </SidebarGroupLabel>
           <SidebarGroupContent className="mt-4">
             <SidebarMenu>
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton className="text-lg" asChild>
+                  <SidebarMenuButton className="text-lg mb-3" asChild>
                     <a href={item.url}>
-                      <span className="w-6 h-6">
-                        <item.icon className="w-full h-full stroke-[2.5]" />
+                      <span className="w-5 h-5">
+                        <item.icon className="w-full h-full stroke-[2]" />
                       </span>
                       <span>{item.title}</span>
                     </a>
