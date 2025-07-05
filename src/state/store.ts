@@ -5,7 +5,7 @@ import userDecksReducer from '../state/userDecks/userDecksSlice'
 export const store = configureStore({
   reducer: {
     user: userReducer,
-    decks: userDecksReducer
+    userDecks: userDecksReducer
   }
 })
 

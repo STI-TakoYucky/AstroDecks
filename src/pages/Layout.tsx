@@ -1,6 +1,6 @@
 import { AppSidebar } from "@/components/AppSidebar";
 import { SidebarProvider } from "@/components/ui/sidebar";
-import { UserButton, useAuth } from "@clerk/clerk-react";
+import { UserButton, useAuth, useClerk } from "@clerk/clerk-react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -11,7 +11,9 @@ export default function Layout() {
   const navigate = useNavigate();
   const userData = useAppSelector(state => state.user)
   const dispatch = useAppDispatch()
+  const { signOut } = useClerk()
   const { getToken, isLoaded, isSignedIn } = useAuth();
+
   useEffect(() => {
     if (!isLoaded) return;
 
@@ -20,10 +22,11 @@ export default function Layout() {
       return;
     }
 
+    //authenticate the user's data
     const fetchExternalData = async () => {
       try {
         const token = await getToken();
-        const { data } = await axios.get("http://localhost:3000/api/protected", {
+        const { data, status } = await axios.get("http://localhost:3000/api/protected", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -31,14 +34,17 @@ export default function Layout() {
 
         if (!data) {
           navigate("/sign-in");
-          return;
+          return; 
         }
-
+        
         dispatch(fetchUser(data))
         return
-      } catch (error) {
-        console.error("Error Message: " + error);
-        navigate("/sign-in");
+      } catch (error: any) {
+        console.error("Error Message: " + error.response);
+        if (error.name == "AxiosError") {
+          alert("Failed to authenticate user. Please Login again.")
+          signOut()
+        }
       }
     };
 
