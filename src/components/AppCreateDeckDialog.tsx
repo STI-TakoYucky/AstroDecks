@@ -16,8 +16,8 @@ import { useAppSelector } from "@/hooks/reduxHooks";
 
 export default function AppDialog({ handleSubmit }: {handleSubmit: (e: FormEvent<HTMLFormElement>, data: DeckInterface) => void}) {
 
-  const author = useAppSelector(state => state.user.username)
-  const [title, setTitle] = useState<string>("")
+  const user = useAppSelector(state => state.user)
+  const [title, setTitle] = useState<string>("Untitled")
 
   return (
     <Dialog>
@@ -32,7 +32,7 @@ export default function AppDialog({ handleSubmit }: {handleSubmit: (e: FormEvent
           </button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-[425px]">
-        <form onSubmit={(e) => handleSubmit(e, {title, author, cards: []})} className="flex-col gap-5 flex">
+        <form onSubmit={(e) => handleSubmit(e, {title, author: user.username, authorID: user._id, imageUrl: user.imageUrl, cards: []})} className="flex-col gap-5 flex">
           <DialogHeader>
             <DialogTitle>Create Deck</DialogTitle>
           </DialogHeader>
