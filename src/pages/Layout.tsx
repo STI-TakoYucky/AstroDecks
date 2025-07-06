@@ -26,7 +26,7 @@ export default function Layout() {
     const fetchExternalData = async () => {
       try {
         const token = await getToken();
-        const { data, status } = await axios.get("http://localhost:3000/api/protected", {
+        const { data } = await axios.get("http://localhost:3000/api/protected", {
           headers: {
             Authorization: `Bearer ${token}`,
           },

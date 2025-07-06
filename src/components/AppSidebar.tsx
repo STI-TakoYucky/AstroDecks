@@ -15,12 +15,12 @@ import {
 const items = [
   {
     title: "My Decks",
-    url: "my-decks",
+    url: "/my-decks",
     icon: Layers,
   },
   {
     title: "Community Decks",
-    url: "community-decks",
+    url: "/community-decks",
     icon: Users,
   },
 ];
