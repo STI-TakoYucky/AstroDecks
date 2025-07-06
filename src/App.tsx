@@ -8,7 +8,7 @@ import CommunityDecks from "./pages/CommunityDecks";
 import { Provider } from "react-redux";
 import { store } from "./state/store";
 import DeckDetails from "./pages/DeckDetails";
-import './global.css'
+import "./global.css";
 
 function App() {
   return (
@@ -16,11 +16,13 @@ function App() {
       <Routes>
         <Route path="/sign-in" element={<SignIn />} />
         <Route path="/sign-up" element={<SignUp />} />
+
         <Route path="/" element={<Layout />}>
           <Route path="/" element={<Navigate to="/my-decks" replace />} />
+
           <Route path="my-decks" element={<MyDecks />} />
-            <Route path="/:id" element={<DeckDetails/>}>
-          </Route>
+          <Route path="my-decks/:id" element={<DeckDetails />} />
+
           <Route path="community-decks" element={<CommunityDecks />} />
         </Route>
       </Routes>

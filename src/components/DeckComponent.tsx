@@ -6,7 +6,7 @@ export default function DeckComponent({data}: {data:DeckInterface}) {
  const user = useAppSelector(state => state.user)
  const navigate = useNavigate()
   return (
-    <div onClick={() => navigate(`/${data._id}`)} className="hover:translate-y-2 cursor-pointer hover:bg-slate-50 transition-all duration-200 bg-white rounded-md overflow-hidden min-h-[10rem] shadow-sm relative">
+    <div onClick={() => navigate(`/my-decks/${data._id}`)} className="hover:translate-y-2 cursor-pointer hover:bg-slate-50 transition-all duration-200 bg-white rounded-md overflow-hidden min-h-[10rem] shadow-sm relative">
       <div className="px-5 py-4">
         <div className="flex items-center gap-2 mb-3">
           <div className="max-w-4 max-h-4">

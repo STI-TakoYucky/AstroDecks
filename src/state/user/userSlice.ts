@@ -1,15 +1,12 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import { initDecks } from "../userDecks/userDecksSlice";
 
 export const fetchUser = createAsyncThunk(
   "user/fetchUser",
   async (userData, thunkAPI) => {
     try {
 
-      const { data } = await axios.post("http://localhost:3000/api", userData);
-
-      thunkAPI.dispatch(initDecks(data.decks))
+      const { data } = await axios.post("http://localhost:3000/api/users", userData);
 
       return data;
     } catch (error: any) {
