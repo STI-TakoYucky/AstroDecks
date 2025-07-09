@@ -1,35 +1,28 @@
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuGroup,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuPortal,
-  DropdownMenuSeparator,
-  DropdownMenuShortcut,
-  DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { ChevronDown, ExternalLink, SquarePen, Trash } from "lucide-react";
-import AppDialog from "./AppDialog";
-import { useState, type FormEvent } from "react";
+import AppDialog from "./AppInputDialog";
+import { useEffect, useState, type FormEvent } from "react";
 import type { DeckInterface } from "@/types";
 import { useAppDispatch } from "@/hooks/reduxHooks";
 import { deleteDeck, renameDeck } from "@/state/userDecks/userDecksSlice";
-import { AppCustomAlert } from "./AppCustomAlert";
+import { CustomAlertDialog } from "./CustomAlertDialog";
 import { useNavigate } from "react-router-dom";
 
 export function DeckDropdown({ deck }: { deck: DeckInterface }) {
   const dispatch = useAppDispatch();
 
-  const [title, setTitle] = useState<string>(deck.title);
+  const [title, setTitle] = useState<string>("");
   const [isRenameOpen, setRenameOpen] = useState<boolean>(false);
   const [alertOpen, setAlertOpen] = useState<boolean>(false);
   const navigate = useNavigate()
 
   const handleRenameSubmit = (e: FormEvent<HTMLFormElement>) => {
+    if (!title) return
     e.preventDefault();
     dispatch(renameDeck({ newTitle: title, deck }));
     setRenameOpen(false);
@@ -45,8 +38,8 @@ export function DeckDropdown({ deck }: { deck: DeckInterface }) {
     <>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <span className="hover:bg-slate-200 rounded-full bg-slate-100 border-[1px] cursor-pointer p-1 transition-all duration-200">
-            <ChevronDown size={20} />
+          <span className="hover:bg-slate-200 rounded-full cursor-pointer transition-all duration-200">
+            <ChevronDown size={25} />
           </span>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-56" align="start">
@@ -75,13 +68,13 @@ export function DeckDropdown({ deck }: { deck: DeckInterface }) {
       }
 
       {alertOpen && (
-        <AppCustomAlert
+        <CustomAlertDialog
           handleSubmit={handleDeleteSubmit}
           title={"Confirm Delete?"}
           desc={"This action can not be undone."}
           open={alertOpen}
           onOpenChange={setAlertOpen}
-        ></AppCustomAlert>
+        ></CustomAlertDialog>
       )}
     </>
   );

@@ -1,4 +1,4 @@
-import AppDialog from "@/components/AppDialog";
+import AppDialog from "@/components/AppInputDialog";
 import DeckComponent from "@/components/DeckComponent";
 import { useEffect, useState, type FormEvent } from "react";
 import { useAppDispatch, useAppSelector } from "@/hooks/reduxHooks";
