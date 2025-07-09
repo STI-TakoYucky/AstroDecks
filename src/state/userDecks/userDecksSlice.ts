@@ -7,7 +7,6 @@ export const pushDeck = createAsyncThunk(
   async (decksData: DeckInterface, thunkAPI) => {
     try {
        const { data } = await axios.post('http://localhost:3000/api/decks', decksData)
-              console.log(data)
        return data
     } catch (error: any) {
       return thunkAPI.rejectWithValue(error.response.data)
@@ -51,6 +50,18 @@ export const deleteDeck = createAsyncThunk(
   }
 )
 
+export const updateDeckCards = createAsyncThunk(
+  'userDecks/updateDeckCards',
+  async (deck: DeckInterface, thunkAPI) => {
+
+    try {
+      await axios.patch(`http://localhost:3000/api/decks/updateCards/${deck._id}`, deck)
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(error.response.data)
+    }
+  }
+)
+
 interface UserDecksState {
   decks: DeckInterface[];
   loading: boolean,
@@ -66,7 +77,30 @@ const initialState: UserDecksState = {
 const userDecksSlice = createSlice({
     name: "userDecks",
     initialState,
-    reducers:{},
+    reducers:{
+      //add card to local state, not the db
+      addCard: (state, action) => {
+        //filter out the decks first then add it to its the cards array
+        state.decks.filter(item => item._id == action.payload._id && item.cards.push(action.payload.cardData))
+      },
+      editCard: (state, action) => {
+          const deck = state.decks.find(deck => deck._id === action.payload._id);
+          if (!deck) return;
+
+          const card = deck.cards.find(card => card._id === action.payload.cardData._id);
+          if (!card) return;
+
+          card.term = action.payload.cardData.term;
+          card.definition = action.payload.cardData.definition;
+      },
+      deleteCard: (state, action) => {
+        const deck = state.decks.find(deck => deck._id === action.payload._id)
+
+        if (deck) {
+          deck.cards = deck?.cards.filter(card => card._id !== action.payload.cardId )
+        }
+      }
+    },
     extraReducers: (builder) => {
       builder
         .addCase(pushDeck.pending, (state) => {
@@ -133,9 +167,22 @@ const userDecksSlice = createSlice({
           state.loading = false,
           state.error = data.message as string
         })
+
+        .addCase(updateDeckCards.pending, (state) => {
+          state.loading = true,
+          state.error = null
+        })
+        .addCase(updateDeckCards.fulfilled, (state) => {
+          state.loading = false;
+        })
+        .addCase(updateDeckCards.rejected, (state, action) => {
+          const data: any = action.payload
+          state.loading = false,
+          state.error = data.message as string
+        })
     }
 })
 
-// export const { deleteDeckReducer } = userDecksSlice.actions
+export const { addCard, editCard, deleteCard } = userDecksSlice.actions
 
 export default userDecksSlice.reducer

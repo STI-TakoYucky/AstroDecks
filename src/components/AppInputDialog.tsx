@@ -12,7 +12,7 @@ import { DialogFooter, DialogHeader } from "./ui/dialog";
 import { Input } from "./ui/input";
 import type { AppDialogProps } from "@/types";
 
-export default function AppDialog({ handleSubmit, inputFields, dialogTitle, children, open, onOpenChange, description }: AppDialogProps) {
+export default function AppInputDialog({ handleSubmit, inputFields, dialogTitle, children, open, onOpenChange, description }: AppDialogProps) {
 
   // this is a reusable dialog component
   // input fields represents the input to render. See the structure below
@@ -52,6 +52,7 @@ export default function AppDialog({ handleSubmit, inputFields, dialogTitle, chil
                     name={item.label}
                     placeholder={item.value}
                     defaultValue={item.value}
+                    required
                     onChange={(e) => {
                       item.mutator(e.target.value);
                     }}
