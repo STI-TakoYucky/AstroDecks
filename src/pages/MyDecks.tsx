@@ -37,12 +37,12 @@ export default function MyDecks() {
 
   return (
     <>
-      <main className="w-full px-[4rem] py-[3rem] h-[100%]">
-        <section className="w-full z-10 mb-10">
+      <main className="main-container">
+        <section className="z-10 w-full mb-10">
           <AppDialog handleSubmit={handleSubmit} dialogTitle={"Create Deck"} inputFields={AppDialogFields} open={open} onOpenChange={onOpenChange}>
             <button
               type="button"
-              className="border-2 text-base font-semibold border-black rounded-md pr-3 pl-2 py-1 cursor-pointer hover:bg-black hover:text-white"
+              className="py-1 pl-2 pr-3 text-base font-semibold border-2 border-black rounded-md cursor-pointer hover:bg-black hover:text-white"
             >
               <span className="flex items-center justify-center gap-1">
                 <Plus /> Create Deck

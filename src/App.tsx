@@ -9,6 +9,7 @@ import { Provider } from "react-redux";
 import { store } from "./state/store";
 import DeckDetails from "./pages/DeckDetails";
 import "./global.css";
+import LearnDeck from "./pages/LearnDeck";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
 
           <Route path="my-decks" element={<MyDecks />} />
           <Route path="my-decks/:id" element={<DeckDetails />} />
+          <Route path="my-decks/:id/learn" element={<LearnDeck />} />
 
           <Route path="community-decks" element={<CommunityDecks />} />
         </Route>
