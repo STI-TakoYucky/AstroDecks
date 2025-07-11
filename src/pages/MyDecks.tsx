@@ -29,7 +29,7 @@ export default function MyDecks() {
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
-    const data = {title, author: user.username, authorID: user._id, imageUrl: user.imageUrl, cards: []}
+    const data = {title, authorID: user._id, public: true, color: "#bfdbfe", cards: []}
     dispatch(pushDeck(data))
     setTitle("Untitled")
     onOpenChange(false)
