@@ -59,14 +59,15 @@ export default function LearnDeck() {
                     <div className={`bg-green-600 h-full transition-all duration-300`} style={{ width: `${progress}%` }}></div>
                 </div>
             </section>
-            { cardIndex != cards.length ?
-                <Flashcard front={cards[cardIndex]?.term} back={cards[cardIndex]?.definition || ""}></Flashcard>:
-                <div>
-                    <h1 className="text-4xl font-semibold">
-                    You have completed this deck!
-                    </h1>
-                </div>
-            }
+            
+                { cardIndex != cards.length ?
+                    <Flashcard front={cards[cardIndex]?.term} back={cards[cardIndex]?.definition || ""}></Flashcard>:
+                    <div>
+                        <h1 className="text-4xl font-semibold">
+                        You have completed this deck!
+                        </h1>
+                    </div>
+                }
 
             <nav className='flex gap-2'>
                 <Button type='button' variant={"default"} onClick={handleDecrement}>Back</Button>

@@ -5,6 +5,7 @@ import axios from "axios";
 export const pushDeck = createAsyncThunk(
   'userDecks/pushDeck',
   async (decksData: DeckInterface, thunkAPI) => {
+    
     try {
        const { data } = await axios.post('http://localhost:3000/api/decks', decksData)
        return data
@@ -29,9 +30,9 @@ export const fetchDecks = createAsyncThunk(
 
 export const renameDeck = createAsyncThunk(
   'userDecks/renameDeck',
-  async(deck: {newTitle: string, deck: DeckInterface}, thunkAPI) => {
+  async(dataPayload: {newTitle: string, deck: DeckInterface}, thunkAPI) => {
     try {
-      const { data } = await axios.patch(`http://localhost:3000/api/decks/${deck.deck._id}`, {title: deck.newTitle})
+      const { data } = await axios.patch(`http://localhost:3000/api/decks/${dataPayload.deck._id}`, {title: dataPayload.newTitle})
       return data;
     } catch (error: any) {
       return thunkAPI.rejectWithValue(error.response.data)
@@ -52,10 +53,22 @@ export const deleteDeck = createAsyncThunk(
 
 export const updateDeckCards = createAsyncThunk(
   'userDecks/updateDeckCards',
-  async (deck: DeckInterface, thunkAPI) => {
+  async (data: DeckInterface, thunkAPI) => {
 
     try {
-      await axios.patch(`http://localhost:3000/api/decks/updateCards/${deck._id}`, deck)
+      await axios.patch(`http://localhost:3000/api/decks/${data._id}`, {cards: data.cards})
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(error.response.data)
+    }
+  }
+)
+
+export const changeVisibility = createAsyncThunk(
+  'userDecks/changeVisibility',
+  async (data: {_id: string, public: boolean}, thunkAPI) => {
+
+    try {
+      await axios.patch(`http://localhost:3000/api/decks/${data._id}`, {public: data.public})
     } catch (error: any) {
       return thunkAPI.rejectWithValue(error.response.data)
     }
