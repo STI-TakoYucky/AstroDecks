@@ -62,7 +62,7 @@ export default function Layout() {
       <SidebarProvider defaultOpen={true}>
         <AppSidebar />
         <div className="w-full">
-          <header className="flex items-center justify-end px-5 min-h-[5rem] sticky z-50 bg-white top-0 border-b-[1px]">
+          <header className="flex items-center justify-end px-5 bg-background min-h-[5rem] sticky z-50 top-0 border-b-[1px]">
             <div className="scale-125 flex items-center">
               <UserButton />
             </div>

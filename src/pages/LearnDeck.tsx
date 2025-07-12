@@ -3,31 +3,45 @@ import { Button } from '@/components/ui/button';
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks';
 import { fetchDecks } from '@/state/userDecks/userDecksSlice';
 import type { CardInterface, DeckInterface } from '@/types';
+import axios from 'axios';
 import _ from 'lodash';
+import { ChevronLeft } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 
 export default function LearnDeck() {   
 
-    const params = useParams<{ id: string }>();
-    const dispatch = useAppDispatch()
-    const localDecks = useAppSelector(state => state.userDecks.decks)
+    const query = useParams<{ id: string }>();
     const [cards, setCards] = useState<CardInterface[]>([])
     const [cardIndex, setCardIndex] = useState<number>(0)
     const user = useAppSelector(state => state.user._id)
     const [progress, setProgress] = useState<number>(0)
+    const navigate = useNavigate();
 
     useEffect(() => {
-        if (!user) return
-        if (localDecks.length === 0) {
-            dispatch(fetchDecks(user));
+    if (!user || !query.id) return;
+
+    const loadDeck = async () => {
+        let deck
+
+        if (!deck) {
+        try {
+            const { data } = await axios.get(`http://localhost:3000/api/decks/deck/${query.id}`);
+            deck = data;
+        } catch (error: any) {
+            console.error(error.response?.data?.message || error.message);
             return;
         }
+        }
 
-        const deck = localDecks.find(item => item._id === params.id)
-        setCards(_.shuffle(deck?.cards))
-        
-    }, [localDecks, user])
+        if (deck?.cards) {
+        setCards(_.shuffle(deck.cards));
+        }
+    };
+
+    loadDeck();
+    }, [user, query.id]);
+
 
     useEffect(() => {
         setProgress((cardIndex / cards.length) * 100)
@@ -53,23 +67,27 @@ export default function LearnDeck() {
     
   return (
     <main className='main-container'>
+        <nav>
+            <ChevronLeft size={40} className='cursor-pointer hover:bg-slate-100 rounded-full transition-all duration-200 hover:text-black-200' onClick={() => navigate(-1)}></ChevronLeft>
+        </nav>
         <section className='flex flex-col items-center justify-between h-full'>
             <section>
-                <div className='w-[20rem] border-2 rounded-md h-10 overflow-hidden'>
+                <div className='w-[50rem] border-2 rounded-md h-6 overflow-hidden'>
                     <div className={`bg-green-600 h-full transition-all duration-300`} style={{ width: `${progress}%` }}></div>
                 </div>
             </section>
             
                 { cardIndex != cards.length ?
-                    <Flashcard front={cards[cardIndex]?.term} back={cards[cardIndex]?.definition || ""}></Flashcard>:
-                    <div>
-                        <h1 className="text-4xl font-semibold">
-                        You have completed this deck!
+                    <Flashcard key={cardIndex} front={cards[cardIndex]?.term} back={cards[cardIndex]?.definition || ""}></Flashcard>:
+                    <div className='text-center'>
+                        <h1 className="text-4xl font-semibold mb-10">
+                            You have completed this deck!
                         </h1>
+                        <Button variant={"default"} onClick={() => navigate(-1)}>Return to deck</Button>
                     </div>
                 }
 
-            <nav className='flex gap-2'>
+            <nav className='flex gap-5 w-full justify-center'>
                 <Button type='button' variant={"default"} onClick={handleDecrement}>Back</Button>
                 <Button type='button' variant={"default"} onClick={handleIncrement}>Next</Button>
             </nav>

@@ -1,6 +1,6 @@
 import { FlashcardDialog } from "@/components/FlashcardDialog";
 import { DeckDropdown } from "@/components/DeckDropdown";
-import FlashcardComponent from "@/components/FlashcardComponent";
+import FlashcardComponent from "@/components/FlashcardPreview";
 import { Button } from "@/components/ui/button";
 import { useAppDispatch, useAppSelector } from "@/hooks/reduxHooks";
 import { addCard, changeVisibility, fetchDecks, updateDeckCards } from "@/state/userDecks/userDecksSlice";
@@ -9,16 +9,17 @@ import { Loader2, Lock, LockKeyhole, Pencil, Plus, Trash, UnlockKeyhole } from "
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import isEqual from 'lodash.isequal';
-import { CustomAlertDialog } from "@/components/CustomAlertDialog";
 import { debounce } from "lodash";
 
 export default function DeckDetails() {
   const dispatch = useAppDispatch();
   const query = useParams<{ id: string }>();
   const user = useAppSelector((state) => state.user);
+  const navigate = useNavigate()
+  const didMountRef = useRef(false);
+
   const [loading, setLoading] = useState<boolean>(false);
   const [hasUnsavedChanges, setUnsavedChanges] = useState(false);
-  const navigate = useNavigate()
   const [isPublic, setPublic] = useState<boolean | null>(null)
 
   // the reference to all the user's decks
@@ -31,19 +32,25 @@ export default function DeckDetails() {
 
   // check if the decks changed
   useEffect(() => {
-    if (!deck) return;
+    // if user id is missing, return
+    if (!user._id) return;
+    // if deck is missing fetch the deck and return
+    if (!deck) { dispatch(fetchDecks(user._id)); return }
+    if (!isPublic) setPublic(deck.public)
+
+    if (!didMountRef.current) {
+      didMountRef.current = true;
+      prevDeckRef.current = deck;
+      return;
+    }
 
     const compare = isEqual(prevDeckRef.current, deck);
-    if (prevDeckRef.current && !compare) {
+    if (!compare) {
       setUnsavedChanges(true);
     }
-    prevDeckRef.current = deck;
-  }, [deck]);
 
-  useEffect(() => {
-    if (!user._id) return;
-    dispatch(fetchDecks(user._id));
-  }, [user._id]);
+    prevDeckRef.current = deck;
+  }, [deck, user._id]);
 
   useEffect(() => {
     if (!decks) return;
@@ -64,12 +71,7 @@ export default function DeckDetails() {
     return () => window.removeEventListener("beforeunload", handleBeforeUnload);
   }, [hasUnsavedChanges]);
 
-  useEffect(() => {
-    if (!deck) return
-    
-    setPublic(deck.public)
-  }, [deck])
-
+  //debounce
   useEffect(() => {
     if (!deck || !deck._id) return;
 
@@ -107,77 +109,91 @@ export default function DeckDetails() {
 
   return (
     <main className="main-container">
-      <header className="mb-8">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className={`w-8 h-8 rounded-md`} style={{backgroundColor: deck?.color}}></div>
-            <h1 className="text-4xl tracking-wide font-semibold max-w-[40rem] pb-4 truncate">
-              {deck?.title}
-            </h1>
-            {deck && <DeckDropdown deck={deck}></DeckDropdown>}
-          </div>
-          <div className="flex items-center gap-2">
-            <Button
-              type="button"
-              onClick={() => setPublic((prev) => !prev)}
-              variant={"default"}
-            >
-              {isPublic ? <UnlockKeyhole /> : <LockKeyhole />}
-
-              {isPublic ? "Public" : "Private"}
-            </Button>
-            <FlashcardDialog handleSubmit={handleSubmit}>
-              <Button type="button" variant={"default"}>
-                <Plus /> Add Card
-              </Button>
-            </FlashcardDialog>
-
-            <Button
-              className="min-w-[7rem]"
-              onClick={() => navigate(`/my-decks/${deck?._id}/learn`)}
-            >
-              Learn Deck
-            </Button>
-
-            {hasUnsavedChanges && (
+      {
+        deck && 
+        <header className="mb-8">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className={`w-7 h-7 rounded-md`} style={{backgroundColor: deck?.color}}></div>
+              <h1 className="text-4xl tracking-wide font-semibold max-w-[40rem] truncate">
+                {deck?.title}
+              </h1>
+              {deck && <DeckDropdown deck={deck}></DeckDropdown>}
+            </div>
+            <div className="flex items-center gap-2">
               <Button
-                onClick={saveChanges}
-                disabled={loading}
-                className="min-w-[7rem] bg-green-600"
+                type="button"
+                onClick={() => setPublic((prev) => !prev)}
+                variant={isPublic ? "outline": "default"}
+                className={isPublic ? "!bg-background hover:!bg-foreground hover:!text-background !border-foreground text-foreground": "bg-foreground text-background hover:!bg-foreground/90"}
               >
-                {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                {loading ? "Loading" : "Save Changes"}
+                {isPublic ? <UnlockKeyhole /> : <LockKeyhole />}
+
+                {isPublic ? "Public" : "Private"}
               </Button>
-            )}
-          </div>
-        </div>
+              <FlashcardDialog handleSubmit={handleSubmit}>
+                <Button type="button" variant={"default"}>
+                  <Plus /> Add Card
+                </Button>
+              </FlashcardDialog>
 
-        <div className="flex items-center gap-2 mb-3">
-          <div className="max-w-8 max-h-8">
-            {user.imageUrl && (
-              <img className="rounded-full" src={user.imageUrl}></img>
-            )}
-          </div>
-          <h2>{user?.username}</h2>
-        </div>
-      </header>
+              <Button
+                className="min-w-[7rem]"
+                onClick={() => navigate(`/learn/${deck?._id}`)}
+              >
+                Learn Deck
+              </Button>
 
-      <section className="h-[80%]">
-        {!cards || cards.length === 0 ? (
+              {hasUnsavedChanges && (
+                <Button
+                  onClick={saveChanges}
+                  disabled={loading}
+                  className="min-w-[7rem] bg-[#3C8D63] hover:!bg-[#3C8D63]/70"
+                >
+                  {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                  {loading ? "Loading" : "Save Changes"}
+                </Button>
+              )}
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2 mb-3 mt-5">
+            <div className="max-w-8 max-h-8">
+              {user.imageUrl && (
+                <img className="rounded-full" src={user.imageUrl}></img>
+              )}
+            </div>
+            <h2>{user?.username}</h2>
+          </div>
+        </header>
+      }
+
+      {
+        deck ? 
+        <section className="h-[80%]">
+          {!cards || cards.length === 0 ? (
+            <article className="w-full h-[80%] items-center justify-center flex-col flex gap-5">
+              <h1 className="font-semibold text-4xl">
+                Add a card to get started
+              </h1>
+              <FlashcardDialog handleSubmit={handleSubmit}>
+                <Button type="button" variant={"default"}>
+                  <Plus /> Add Card
+                </Button>
+              </FlashcardDialog>
+            </article>
+          ) : (
+            <FlashcardComponent deck={deck} cards={cards}></FlashcardComponent>
+          )}
+        </section> :
+        <section className="h-[100%]">
           <article className="w-full h-[80%] items-center justify-center flex-col flex gap-5">
             <h1 className="font-semibold text-4xl">
-              Add a card to get started
+              Deck not found
             </h1>
-            <FlashcardDialog handleSubmit={handleSubmit}>
-              <Button type="button" variant={"default"}>
-                <Plus /> Add Card
-              </Button>
-            </FlashcardDialog>
           </article>
-        ) : (
-          <FlashcardComponent deck={deck} cards={cards}></FlashcardComponent>
-        )}
-      </section>
+        </section> 
+      }
     </main>
   );
 }

@@ -20,10 +20,10 @@ export function CustomAlertDialog({type, title, desc, children, open, onOpenChan
       <AlertDialogTrigger asChild>
         {children}
       </AlertDialogTrigger>
-      <AlertDialogContent>
+      <AlertDialogContent className="bg-white dark:bg-foreground text-black-200 border-none">
         <AlertDialogHeader>
           <AlertDialogTitle>{title}</AlertDialogTitle>
-          <AlertDialogDescription>
+          <AlertDialogDescription className="text-dark-100">
             {desc}
           </AlertDialogDescription>
         </AlertDialogHeader>

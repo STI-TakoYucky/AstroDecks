@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 export default function Flashcard({front, back}: {front: string, back: string}) {
   const [isFlipped, setFlipped] = useState(false)
@@ -9,14 +9,12 @@ export default function Flashcard({front, back}: {front: string, back: string}) 
           !isFlipped ? "" : "[transform:rotateY(180deg)]"
         } [transform-style:preserve-3d] w-full h-full transition-transform duration-500 relative ${!back ? "": "cursor-pointer"}`}>
 
-        <div className="absolute w-full h-full p-8 overflow-y-auto border-2 border-black rounded-md shadow-md backface-hidden">
-            <p className="mb-5 text-lg">Term:</p>
-            <p className="text-2xl font-semibold whitespace-pre-line">{front}</p>
+        <div className="absolute w-full h-full p-8 overflow-y-auto border-2 border-black text-black-200 bg-white dark:bg-foreground rounded-md shadow-md backface-hidden">
+            <p className="!text-2xl font-semibold whitespace-pre-line">{front}</p>
         </div>
         
-        <div className="absolute [transform:rotateY(180deg)] p-8 overflow-y-auto  backface-hidden border-2 border-black rounded-md shadow-md w-full h-full">
-            <p className="mb-5 text-lg ">Definition:</p>
-            <p className="text-2xl whitespace-pre-line">{back}</p>
+        <div className="absolute [transform:rotateY(180deg)] p-8 overflow-y-auto  backface-hidden border-2 border-black text-black-200 bg-white dark:bg-foreground rounded-md shadow-md w-full h-full">
+            <p className="!text-2xl whitespace-pre-line">{back}</p>
         </div>
       </div>
     </div>
