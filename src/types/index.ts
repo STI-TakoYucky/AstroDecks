@@ -6,6 +6,12 @@ export interface CardInterface {
   definition?: string;
 }
 
+export interface UserInterface {
+    _id: string,
+    username: string,
+    imageUrl: string,
+}
+
 export interface DeckInterface {
   _id?: string
   title: string,

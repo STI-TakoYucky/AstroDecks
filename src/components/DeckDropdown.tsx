@@ -8,7 +8,7 @@ import { ChevronDown, ExternalLink, SquarePen, Trash } from "lucide-react";
 import AppDialog from "./AppInputDialog";
 import { useEffect, useState, type FormEvent } from "react";
 import type { DeckInterface } from "@/types";
-import { useAppDispatch } from "@/hooks/reduxHooks";
+import { useAppDispatch, useAppSelector } from "@/hooks/reduxHooks";
 import { deleteDeck, renameDeck } from "@/state/userDecks/userDecksSlice";
 import { CustomAlertDialog } from "./CustomAlertDialog";
 import { useNavigate } from "react-router-dom";
@@ -16,6 +16,7 @@ import { useNavigate } from "react-router-dom";
 export function DeckDropdown({ deck }: { deck: DeckInterface }) {
   const dispatch = useAppDispatch();
 
+  const user = useAppSelector(state => state.user)
   const [title, setTitle] = useState<string>("");
   const [isRenameOpen, setRenameOpen] = useState<boolean>(false);
   const [alertOpen, setAlertOpen] = useState<boolean>(false);
@@ -38,20 +39,28 @@ export function DeckDropdown({ deck }: { deck: DeckInterface }) {
     <>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <span className="hover:bg-slate-200 rounded-full cursor-pointer transition-all duration-200">
+          <span className="dark:hover:!bg-black-100 hover:!bg-black/10 rounded-full cursor-pointer transition-all duration-200">
             <ChevronDown size={25} />
           </span>
         </DropdownMenuTrigger>
-        <DropdownMenuContent className="w-56" align="start">
-          <DropdownMenuItem onClick={() => setRenameOpen(true)}>
-            <SquarePen /> Rename
-          </DropdownMenuItem>
+        <DropdownMenuContent className="w-56 border-none bg-white" align="start">
+          {
+            user._id === deck.authorID && (
+              <DropdownMenuItem onClick={() => setRenameOpen(true)}>
+                <SquarePen /> Rename
+              </DropdownMenuItem>
+            )
+          }
           <DropdownMenuItem>
             <ExternalLink /> Share
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => setAlertOpen(true)}>
-            <Trash /> Delete
-          </DropdownMenuItem>
+          {
+            user._id === deck.authorID && (
+              <DropdownMenuItem onClick={() => setAlertOpen(true)}>
+                <Trash /> Delete
+              </DropdownMenuItem>
+            )
+          }
         </DropdownMenuContent>
       </DropdownMenu>
       {

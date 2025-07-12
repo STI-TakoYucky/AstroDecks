@@ -74,20 +74,20 @@ export function FlashcardDialog({ children, handleSubmit, editCardData }: AppCre
         {children}
       </DialogTrigger>)
       }
-      <DialogContent className="sm:max-w-[425px]" aria-describedby={undefined}>
+      <DialogContent className="sm:max-w-[425px] bg-white dark:bg-foreground text-black-200" aria-describedby={undefined}>
           <DialogHeader>
-            <DialogTitle>
+            <DialogTitle className="text-2xl">
               {editCardData?._id ? "Edit Card" : "Add a card to your deck"}
             </DialogTitle>
           </DialogHeader>
-          <div className="gap-3 flex flex-col bg-white">
+          <div className="gap-3 flex flex-col">
               <div>
                 <Label>Term</Label>
-                <Textarea ref={termRef} onKeyDown={handleKeyDown} className="mt-2 resize-none overflow-auto" placeholder="Term" value={term} onChange={(e) => setTerm(e.target.value)}/>
+                <Textarea ref={termRef} onKeyDown={handleKeyDown} className="mt-2 !text-base bg-white dark:bg-foreground border-[2px] border-dark-200 resize-none overflow-auto" placeholder="Term" value={term} onChange={(e) => setTerm(e.target.value)}/>
               </div>
               <div>
                 <Label>Definition</Label>
-                <Textarea onKeyDown={handleKeyDown} className="mt-2 resize-none overflow-auto" placeholder="Definition" value={definition} onChange={(e) => setDefinition(e.target.value)}/>
+                <Textarea onKeyDown={handleKeyDown} className="mt-2 resize-none overflow-auto !text-base bg-white dark:bg-foreground border-[2px] border-dark-200" placeholder="Definition" value={definition} onChange={(e) => setDefinition(e.target.value)}/>
               </div>
           </div>
           <DialogFooter className="flex items-center !justify-end">

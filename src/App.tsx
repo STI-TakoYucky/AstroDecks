@@ -10,6 +10,7 @@ import { store } from "./state/store";
 import DeckDetails from "./pages/DeckDetails";
 import "./global.css";
 import LearnDeck from "./pages/LearnDeck";
+import CommunityDeckDetails from "./pages/CommunityDeckDetails";
 
 function App() {
   return (
@@ -23,9 +24,10 @@ function App() {
 
           <Route path="my-decks" element={<MyDecks />} />
           <Route path="my-decks/:id" element={<DeckDetails />} />
-          <Route path="my-decks/:id/learn" element={<LearnDeck />} />
+          <Route path="learn/:id" element={<LearnDeck />} />
 
           <Route path="community-decks" element={<CommunityDecks />} />
+          <Route path="community-decks/:id" element={<CommunityDeckDetails/>} />
         </Route>
       </Routes>
     </Provider>

@@ -21,6 +21,7 @@ export const fetchDecks = createAsyncThunk(
     try {
       //the data is an array
       const { data } = await axios.get(`http://localhost:3000/api/decks/${userID}`)
+      
       return data
     } catch (error: any) {
       return thunkAPI.rejectWithValue(error.response.data)
