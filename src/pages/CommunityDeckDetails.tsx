@@ -23,8 +23,8 @@ export default function CommunityDeckDetails() {
   useEffect(() => {
     const fetchDeck = async () => {
       try {
-        const deck = await axios.get(`http://localhost:3000/api/decks/deck/${query.id}`);
-        const user = await axios.get(`http://localhost:3000/api/users/${deck.data.authorID}`);
+        const deck = await axios.get(`${import.meta.env.VITE_API_URL}/api/decks/deck/${query.id}`);
+        const user = await axios.get(`${import.meta.env.VITE_API_URL}/api/users/${deck.data.authorID}`);
 
         setDeck(deck.data);
         setAuthor(user.data);

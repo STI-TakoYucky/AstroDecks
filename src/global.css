@@ -2,6 +2,29 @@
     @apply w-full px-[4rem] py-[3rem] h-[80%]
 }
 
+@media (max-width: 765px) {
+  .main-container {
+    padding-inline: 2rem;
+  }
+
+  p {
+    font-size: 14px !important;
+  }
+}
+
+@media (max-width: 375px) {
+  .main-container {
+    padding-inline: 1rem;
+  }
+}
+
+@media (max-width: 1024px) {
+  .main-container {
+    padding-inline: 1rem;
+  }
+}
+
+
 h1, h2, h3, h4, h5, h6, h7, p, label, input, button {
     font-family: var(--font-body-font);
 }
@@ -9,3 +32,4 @@ h1, h2, h3, h4, h5, h6, h7, p, label, input, button {
 p, label, input, button {
     font-size: 16px;
 }
+

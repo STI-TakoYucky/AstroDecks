@@ -10,6 +10,20 @@
 ────────────────────────────────────────────── */
 @custom-variant dark (&:is(.dark *));
 
+body {
+    @apply bg-background text-foreground transition-colors duration-300;
+    transition-property: background-color, color;
+    transition-duration: 300ms;
+    transition-timing-function: ease-in-out;
+}
+
+.transition-theme {
+    @apply transition-colors duration-300 bg-background text-foreground;
+    transition-property: background-color, color;
+    transition-duration: 300ms;
+    transition-timing-function: ease-in-out;
+}
+
 /* ──────────────────────────────────────────────
    Project Notes
 ────────────────────────────────────────────── */

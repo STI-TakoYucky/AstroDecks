@@ -15,7 +15,7 @@ export default function CommunityDecks() {
     
     const fetchCommunityDecks = async () => {
       try {
-        const { data } = await axios.get('http://localhost:3000/api/decks')
+        const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/api/decks`)
         setDecks(data)
       } catch (error: any) {
         console.error(error.response.data.message)
