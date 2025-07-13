@@ -1,8 +1,7 @@
 import Flashcard from '@/components/Flashcard';
 import { Button } from '@/components/ui/button';
-import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks';
-import { fetchDecks } from '@/state/userDecks/userDecksSlice';
-import type { CardInterface, DeckInterface } from '@/types';
+import { useAppSelector } from '@/hooks/reduxHooks';
+import type { CardInterface } from '@/types';
 import axios from 'axios';
 import _ from 'lodash';
 import { ChevronLeft } from 'lucide-react';

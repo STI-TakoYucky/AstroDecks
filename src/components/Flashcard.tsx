@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 
 export default function Flashcard({front, back}: {front: string, back: string}) {
   const [isFlipped, setFlipped] = useState(false)

@@ -6,7 +6,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { ChevronDown, ExternalLink, SquarePen, Trash } from "lucide-react";
 import AppDialog from "./AppInputDialog";
-import { useEffect, useState, type FormEvent } from "react";
+import { useState, type FormEvent } from "react";
 import type { DeckInterface } from "@/types";
 import { useAppDispatch, useAppSelector } from "@/hooks/reduxHooks";
 import { deleteDeck, renameDeck } from "@/state/userDecks/userDecksSlice";

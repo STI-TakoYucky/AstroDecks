@@ -1,5 +1,5 @@
 import DeckComponent from "@/components/Deck";
-import { useEffect, useState, type FormEvent } from "react";
+import { useEffect, useState } from "react";
 import { useAppSelector } from "@/hooks/reduxHooks";
 import type { DeckInterface } from "@/types";
 import axios from "axios";

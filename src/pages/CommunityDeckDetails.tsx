@@ -4,13 +4,13 @@ import { Button } from "@/components/ui/button";
 import { useAppSelector } from "@/hooks/reduxHooks";
 import type { CardInterface, DeckInterface, UserInterface } from "@/types";
 import axios from "axios";
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router";
 
 export default function CommunityDeckDetails() {
   const query = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const [isPublic, setPublic] = useState<boolean | null>(null);
+  // const [isPublic, setPublic] = useState<boolean | null>(null);
   const user = useAppSelector(state => state.user)
 
   // the single deck filtered out

@@ -4,7 +4,7 @@ import { UserButton, useAuth, useClerk } from "@clerk/clerk-react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { useAppSelector, useAppDispatch } from "@/hooks/reduxHooks";
+import {useAppDispatch } from "@/hooks/reduxHooks";
 import { fetchUser } from "../state/user/userSlice";
 import { Switch } from "@/components/ui/switch";
 import { Moon, PanelLeft, Sun } from "lucide-react";import type { CSSProperties } from "react";
@@ -12,7 +12,7 @@ import { Moon, PanelLeft, Sun } from "lucide-react";import type { CSSProperties 
 // ---- inner component to safely call useSidebar ----
 function InnerLayout() {
   const navigate = useNavigate();
-  const userData = useAppSelector((state) => state.user);
+  // const userData = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
   const { signOut } = useClerk();
   const { getToken, isLoaded, isSignedIn } = useAuth();

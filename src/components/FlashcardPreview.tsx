@@ -1,5 +1,4 @@
 import { Pencil, Trash } from "lucide-react";
-import { Button } from "./ui/button";
 import type { CardInterface, DeckInterface } from "@/types";
 import { FlashcardDialog } from "./FlashcardDialog";
 import { useAppDispatch, useAppSelector } from "@/hooks/reduxHooks";
