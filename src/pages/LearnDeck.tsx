@@ -1,8 +1,7 @@
 import Flashcard from '@/components/Flashcard';
 import { Button } from '@/components/ui/button';
-import { useAppDispatch, useAppSelector } from '@/hooks/reduxHooks';
-import { fetchDecks } from '@/state/userDecks/userDecksSlice';
-import type { CardInterface, DeckInterface } from '@/types';
+import { useAppSelector } from '@/hooks/reduxHooks';
+import type { CardInterface } from '@/types';
 import axios from 'axios';
 import _ from 'lodash';
 import { ChevronLeft } from 'lucide-react';
@@ -26,7 +25,7 @@ export default function LearnDeck() {
 
         if (!deck) {
         try {
-            const { data } = await axios.get(`http://localhost:3000/api/decks/deck/${query.id}`);
+            const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/api/decks/deck/${query.id}`);
             deck = data;
         } catch (error: any) {
             console.error(error.response?.data?.message || error.message);
@@ -70,9 +69,9 @@ export default function LearnDeck() {
         <nav>
             <ChevronLeft size={40} className='cursor-pointer hover:bg-slate-100 rounded-full transition-all duration-200 hover:text-black-200' onClick={() => navigate(-1)}></ChevronLeft>
         </nav>
-        <section className='flex flex-col items-center justify-between h-full'>
-            <section>
-                <div className='w-[50rem] border-2 rounded-md h-6 overflow-hidden'>
+        <section className='flex flex-col items-center justify-around h-full'>
+            <section className='w-full flex justify-center'>
+                <div className='w-[80%] max-w-[40rem] border-2 rounded-md h-6 overflow-hidden !border-foreground'>
                     <div className={`bg-green-600 h-full transition-all duration-300`} style={{ width: `${progress}%` }}></div>
                 </div>
             </section>

@@ -9,11 +9,9 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
-import { Button } from "@/components/ui/button"
 import type { AppCustomAlert } from "@/types"
-import { useEffect, useRef } from "react"
 
-export function CustomAlertDialog({type, title, desc, children, open, onOpenChange, handleSubmit}: AppCustomAlert) {
+export function CustomAlertDialog({title, desc, children, open, onOpenChange, handleSubmit}: AppCustomAlert) {
 
   return (
     <AlertDialog open={open} onOpenChange={onOpenChange}>

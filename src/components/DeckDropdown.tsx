@@ -6,12 +6,13 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { ChevronDown, ExternalLink, SquarePen, Trash } from "lucide-react";
 import AppDialog from "./AppInputDialog";
-import { useEffect, useState, type FormEvent } from "react";
+import { useState, type FormEvent } from "react";
 import type { DeckInterface } from "@/types";
 import { useAppDispatch, useAppSelector } from "@/hooks/reduxHooks";
 import { deleteDeck, renameDeck } from "@/state/userDecks/userDecksSlice";
 import { CustomAlertDialog } from "./CustomAlertDialog";
 import { useNavigate } from "react-router-dom";
+import AppShareLinkDialog from "./AppShareLinkDialog";
 
 export function DeckDropdown({ deck }: { deck: DeckInterface }) {
   const dispatch = useAppDispatch();
@@ -20,6 +21,7 @@ export function DeckDropdown({ deck }: { deck: DeckInterface }) {
   const [title, setTitle] = useState<string>("");
   const [isRenameOpen, setRenameOpen] = useState<boolean>(false);
   const [alertOpen, setAlertOpen] = useState<boolean>(false);
+  const [isShareOpen, setShareOpen] = useState<boolean>(false)
   const navigate = useNavigate()
 
   const handleRenameSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -51,8 +53,8 @@ export function DeckDropdown({ deck }: { deck: DeckInterface }) {
               </DropdownMenuItem>
             )
           }
-          <DropdownMenuItem>
-            <ExternalLink /> Share
+          <DropdownMenuItem  onClick={() => setShareOpen(true)}>
+            <ExternalLink/> Share
           </DropdownMenuItem>
           {
             user._id === deck.authorID && (
@@ -84,6 +86,10 @@ export function DeckDropdown({ deck }: { deck: DeckInterface }) {
           open={alertOpen}
           onOpenChange={setAlertOpen}
         ></CustomAlertDialog>
+      )}
+
+      { isShareOpen && (
+        <AppShareLinkDialog open={isShareOpen} onOpenChange={setShareOpen} url={deck._id || ""}></AppShareLinkDialog>
       )}
     </>
   );

@@ -7,7 +7,7 @@ export const pushDeck = createAsyncThunk(
   async (decksData: DeckInterface, thunkAPI) => {
     
     try {
-       const { data } = await axios.post('http://localhost:3000/api/decks', decksData)
+       const { data } = await axios.post(`${import.meta.env.VITE_API_URL}/api/decks`, decksData)
        return data
     } catch (error: any) {
       return thunkAPI.rejectWithValue(error.response.data)
@@ -20,7 +20,7 @@ export const fetchDecks = createAsyncThunk(
   async (userID: string, thunkAPI) => {
     try {
       //the data is an array
-      const { data } = await axios.get(`http://localhost:3000/api/decks/${userID}`)
+      const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/api/decks/${userID}`)
       
       return data
     } catch (error: any) {
@@ -33,7 +33,7 @@ export const renameDeck = createAsyncThunk(
   'userDecks/renameDeck',
   async(dataPayload: {newTitle: string, deck: DeckInterface}, thunkAPI) => {
     try {
-      const { data } = await axios.patch(`http://localhost:3000/api/decks/${dataPayload.deck._id}`, {title: dataPayload.newTitle})
+      const { data } = await axios.patch(`${import.meta.env.VITE_API_URL}/api/decks/${dataPayload.deck._id}`, {title: dataPayload.newTitle})
       return data;
     } catch (error: any) {
       return thunkAPI.rejectWithValue(error.response.data)
@@ -45,7 +45,7 @@ export const deleteDeck = createAsyncThunk(
   'userDecks/deleteDeck',
   async (deckID: string, thunkAPI) => {
     try {
-      await axios.delete(`http://localhost:3000/api/decks/${deckID}`)
+      await axios.delete(`${import.meta.env.VITE_API_URL}/api/decks/${deckID}`)
     } catch (error: any) {
       return thunkAPI.rejectWithValue(error.response.data)
     }
@@ -57,7 +57,7 @@ export const updateDeckCards = createAsyncThunk(
   async (data: DeckInterface, thunkAPI) => {
 
     try {
-      await axios.patch(`http://localhost:3000/api/decks/${data._id}`, {cards: data.cards})
+      await axios.patch(`${import.meta.env.VITE_API_URL}/api/decks/${data._id}`, {cards: data.cards})
     } catch (error: any) {
       return thunkAPI.rejectWithValue(error.response.data)
     }
@@ -69,7 +69,7 @@ export const changeVisibility = createAsyncThunk(
   async (data: {_id: string, public: boolean}, thunkAPI) => {
 
     try {
-      await axios.patch(`http://localhost:3000/api/decks/${data._id}`, {public: data.public})
+      await axios.patch(`${import.meta.env.VITE_API_URL}/api/decks/${data._id}`, {public: data.public})
     } catch (error: any) {
       return thunkAPI.rejectWithValue(error.response.data)
     }

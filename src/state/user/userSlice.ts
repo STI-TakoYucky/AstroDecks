@@ -6,7 +6,7 @@ export const fetchUser = createAsyncThunk(
   async (userData, thunkAPI) => {
     try {
 
-      const { data } = await axios.post("http://localhost:3000/api/users", userData);
+      const { data } = await axios.post(`${import.meta.env.VITE_API_URL}/api/users`, userData);
 
       return data;
     } catch (error: any) {

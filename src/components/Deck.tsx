@@ -19,7 +19,7 @@ export default function Deck({ deck }: { deck: DeckInterface }) {
       const fetchAuthor = async () => {
         try {
           const { data } = await axios.get(
-            `http://localhost:3000/api/users/${deck.authorID}`
+            `${import.meta.env.VITE_API_URL}/api/users/${deck.authorID}`
           );
           setUserImage(data.imageUrl);
           setUsername(data.username);
@@ -62,7 +62,7 @@ export default function Deck({ deck }: { deck: DeckInterface }) {
             <p className="font-semibold px-1">{deck.cards.length}</p>
           </div>
         </div>
-        <h1 className="line-clamp-2 w-full font-semibold text-lg mb-5 text-black-200">
+        <h1 className="line-clamp-2 w-full font-semibold text-base md:text-lg mb-5 text-black-200">
           {deck.title}
         </h1>
       </div>

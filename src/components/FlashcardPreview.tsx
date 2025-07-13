@@ -1,5 +1,4 @@
 import { Pencil, Trash } from "lucide-react";
-import { Button } from "./ui/button";
 import type { CardInterface, DeckInterface } from "@/types";
 import { FlashcardDialog } from "./FlashcardDialog";
 import { useAppDispatch, useAppSelector } from "@/hooks/reduxHooks";
@@ -28,20 +27,23 @@ export default function FlashcardComponent({
       {cards.map((item: CardInterface) => (
         <div
           key={item._id}
-          className="flex items-stretch bg-white border border-gray-200 !min-h-[7rem] rounded-xl shadow-sm hover:shadow-md transition overflow-hidden"
+          className="flex flex-col md:flex-row items-stretch bg-white border border-gray-200 !min-h-[7rem] rounded-xl shadow-sm hover:shadow-md transition overflow-hidden"
         >
-          <div className="w-1/2 p-4">
+          {/* TERM */}
+          <div className="md:w-1/2 p-4">
             <p className="whitespace-pre-line text-gray-900 font-medium !text-xl">
               {item.term}
             </p>
           </div>
 
+          {/* DIVIDER (hidden on mobile if no space) */}
           {item.definition && (
-            <div className="w-1 my-3 rounded-full bg-primary"></div>
+            <div className="hidden md:block w-[1px] my-3 bg-primary"></div>
           )}
 
-          <div className="w-1/2 p-4 flex flex-col justify-between">
-            <p className="whitespace-pre-line text-black-100  !text-xl">
+          {/* DEFINITION */}
+          <div className="md:w-1/2 p-4 flex flex-col justify-between border-t md:border-t-0 md:border-l border-gray-200">
+            <p className="whitespace-pre-line text-black-100 !text-xl">
               {item.definition}
             </p>
 
@@ -69,6 +71,7 @@ export default function FlashcardComponent({
             )}
           </div>
         </div>
+
       ))}
     </section>
   );

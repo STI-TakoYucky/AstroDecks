@@ -4,13 +4,13 @@ import { Button } from "@/components/ui/button";
 import { useAppSelector } from "@/hooks/reduxHooks";
 import type { CardInterface, DeckInterface, UserInterface } from "@/types";
 import axios from "axios";
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router";
 
 export default function CommunityDeckDetails() {
   const query = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const [isPublic, setPublic] = useState<boolean | null>(null);
+  // const [isPublic, setPublic] = useState<boolean | null>(null);
   const user = useAppSelector(state => state.user)
 
   // the single deck filtered out
@@ -23,8 +23,8 @@ export default function CommunityDeckDetails() {
   useEffect(() => {
     const fetchDeck = async () => {
       try {
-        const deck = await axios.get(`http://localhost:3000/api/decks/deck/${query.id}`);
-        const user = await axios.get(`http://localhost:3000/api/users/${deck.data.authorID}`);
+        const deck = await axios.get(`${import.meta.env.VITE_API_URL}/api/decks/deck/${query.id}`);
+        const user = await axios.get(`${import.meta.env.VITE_API_URL}/api/users/${deck.data.authorID}`);
 
         setDeck(deck.data);
         setAuthor(user.data);
