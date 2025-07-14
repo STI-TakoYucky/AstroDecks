@@ -11,6 +11,7 @@ import DeckDetails from "./pages/DeckDetails";
 import "./global.css";
 import LearnDeck from "./pages/LearnDeck";
 import CommunityDeckDetails from "./pages/CommunityDeckDetails";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
   return (
@@ -19,7 +20,7 @@ function App() {
         <Route path="/sign-in" element={<SignIn />} />
         <Route path="/sign-up" element={<SignUp />} />
 
-        <Route path="/" element={<Layout />}>
+        <Route path="/" element={<ProtectedRoute><Layout /></ProtectedRoute>}>
           <Route path="/" element={<Navigate to="/my-decks" replace />} />
 
           <Route path="my-decks" element={<MyDecks />} />

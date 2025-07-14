@@ -20,27 +20,15 @@ function InnerLayout() {
   const [isProfileOpen, setProfileOpen] = useState<boolean>(false)
 
   useEffect(() => {
-    const checkAuth = async () => {
-        try {
-          const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/api/protected`, {
-            withCredentials: true, // Send cookies
-          });
-          dispatch(fetchUser(data._id));
-        } catch (error: any) {
-          console.error("Auth error:", error);
-          if (axios.isAxiosError(error) && error.response?.status === 401) {
-            navigate("/sign-in");
-          } else {
-            alert("Something went wrong. Please try again later.");
-            navigate("/sign-in");
-          }
-        } finally {
-          setLoading(false);
-        }
-      };
+  const fetchData = async () => {
+    const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/api/protected`, {
+      withCredentials: true,
+    });
+    dispatch(fetchUser(data._id));
+  };
 
-    checkAuth();
-  }, []);
+  fetchData();
+}, []);
 
   useEffect(() => {
     const root = document.documentElement;
