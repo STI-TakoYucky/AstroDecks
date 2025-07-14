@@ -3,11 +3,11 @@ import axios from "axios";
 
 export const fetchUser = createAsyncThunk(
   "user/fetchUser",
-  async (userData, thunkAPI) => {
+  async (_id, thunkAPI) => {
     try {
 
-      const { data } = await axios.post(`${import.meta.env.VITE_API_URL}/api/users`, userData);
-
+      const { data } = await axios.post(`${import.meta.env.VITE_API_URL}/api/users`, {_id});
+      console.log(data)
       return data;
     } catch (error: any) {
       return thunkAPI.rejectWithValue(error.response.data);

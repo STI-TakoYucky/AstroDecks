@@ -25,8 +25,7 @@ function InnerLayout() {
           const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/api/protected`, {
             withCredentials: true, // Send cookies
           });
-
-          dispatch(fetchUser(data));
+          dispatch(fetchUser(data._id));
         } catch (error: any) {
           console.error("Auth error:", error);
           if (axios.isAxiosError(error) && error.response?.status === 401) {
@@ -47,6 +46,20 @@ function InnerLayout() {
     root.classList.toggle("dark", theme === "dark");
     localStorage.setItem("theme", theme);
   }, [theme]);
+
+  const handleLogout = async () => {
+    try {
+      const { status } = await axios.post(`${import.meta.env.VITE_API_URL}/api/protected/sign-out`, null, {
+        withCredentials: true,
+      });
+
+      if (status === 200) {
+        navigate('/sign-in')
+      }
+    } catch (error: any) {
+      console.error(error.response.data.message)
+    }
+  }
 
   if (loading) {
     return (
@@ -76,7 +89,7 @@ function InnerLayout() {
                 {
                   isProfileOpen && (
                     <div className="absolute w-[15rem] rounded-sm p-2 right-[.5rem] top-[2.5rem] bg-white shadow-md">
-                      <span className="flex p-1 items-center hover:bg-slate-100 rounded-sm cursor-pointer">
+                      <span className="flex p-1 items-center hover:bg-slate-100 rounded-sm cursor-pointer" onClick={handleLogout}>
                         <LogOut size={17} className="dark:text-background"/>
                         <p className="ml-2 select-none dark:text-background text-sm">Sign out</p> 
                       </span>

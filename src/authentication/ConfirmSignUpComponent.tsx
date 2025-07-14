@@ -15,11 +15,11 @@ export default function UsernameComponent({setEmailVerified, username, setUserna
     const handleUsernameVerification = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         try {
-            const { data, status } = await axios.post("http://localhost:5000/api/protected/verify-username",{ username });
+            const { status } = await axios.post(`${import.meta.env.VITE_API_URL}/api/protected/verify-username`,{ username });
             
             if (status == 200) {
                 setError(null)
-                const { data: signUpData } = await axios.post("http://localhost:5000/api/protected/sign-up",{ email: email.trim(), password: password.trim(), username:username.trim() });
+                const { data: signUpData } = await axios.post(`${import.meta.env.VITE_API_URL}/api/protected/sign-up`,{ email: email.trim(), password: password.trim(), username:username.trim() });
                 setSuccess(signUpData.message)
                 setTimeout(() => {
                     navigate('/sign-in')
@@ -66,7 +66,7 @@ export default function UsernameComponent({setEmailVerified, username, setUserna
                     <Button type='button' onClick={() => setEmailVerified((prev: any) => !prev)} variant={"outline"} className="w-1/2">
                         Back
                     </Button>
-                    <Button type="submit" className="w-1/2">
+                    <Button disabled={success ? true: false} type="submit" className="w-1/2">
                         Confirm
                     </Button>
                 </div>

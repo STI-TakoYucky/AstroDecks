@@ -24,7 +24,7 @@ export default function SignInComponent() {
   const handleSignUp = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     try {
-      const { data, status } = await axios.post("http://localhost:5000/api/protected/sign-in",{ email, password }, {withCredentials: true});
+      const { status } = await axios.post(`${import.meta.env.VITE_API_URL}/api/protected/sign-in`,{ email, password }, {withCredentials: true});
       if (status == 200) {
         setError(null)
         setSuccess("Logged in successfully")
@@ -40,7 +40,7 @@ export default function SignInComponent() {
  
   return (
     <div className={cn("flex flex-col gap-6")}>
-      <Card>
+      <Card className="">
         <CardHeader className="text-center">
           <CardTitle className="text-2xl font-header-font">Welcome to AstroDecks</CardTitle>
           <CardDescription>
@@ -56,7 +56,6 @@ export default function SignInComponent() {
                       <Input
                         id="email"
                         type="email"
-                        placeholder="m@example.com"
                         onChange={(e) => setEmail(e.target.value)}
                         onInvalid={(e) => {
                           e.preventDefault()
