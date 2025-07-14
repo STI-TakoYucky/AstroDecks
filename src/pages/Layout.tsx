@@ -32,6 +32,7 @@ function InnerLayout() {
             navigate("/sign-in");
           } else {
             alert("Something went wrong. Please try again later.");
+            navigate("/sign-in");
           }
         } finally {
           setLoading(false);
