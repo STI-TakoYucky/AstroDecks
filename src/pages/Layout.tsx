@@ -16,7 +16,6 @@ function InnerLayout() {
   const dispatch = useAppDispatch();
   const { toggleSidebar, isMobile } = useSidebar();
   const [theme, setTheme] = useState(() => localStorage.getItem("theme") || "light");
-  const [loading, setLoading] = useState(true);
   const [isProfileOpen, setProfileOpen] = useState<boolean>(false)
 
   useEffect(() => {
@@ -48,14 +47,6 @@ function InnerLayout() {
     } catch (error: any) {
       console.error(error.response.data.message)
     }
-  }
-
-  if (loading) {
-    return (
-      <div className="flex justify-center items-center h-screen w-full">
-        <h1 className="text-xl font-semibold font-body-font">Loading...</h1>
-      </div>
-    );
   }
 
   return (
