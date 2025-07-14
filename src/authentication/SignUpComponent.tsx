@@ -10,7 +10,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import axios from "axios";
 import { useState, type FormEvent } from "react";
-import { useNavigate } from "react-router";
 import UsernameComponent from "./ConfirmSignUpComponent";
 
 export default function SignUpComponent() {
@@ -19,9 +18,7 @@ export default function SignUpComponent() {
   const [confirmPassword, setConfirmPassword] = useState<string>("");
   const [username, setUsername] = useState<string>("")
   const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState<string | null>(null)
   const [emailVerified, setEmailVerified] = useState<boolean | null>(null);
-  const navigate = useNavigate();
 
   const handleVerifyEmail = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -38,7 +35,7 @@ export default function SignUpComponent() {
 
     // if all validities are passed axios req to check if email already exists
     try {
-      const { data, status } = await axios.post("http://localhost:5000/api/protected/verify-email",{ email });
+      const { status } = await axios.post(`${import.meta.env.VITE_API_URL}/api/protected/verify-email`,{ email });
       if (status == 200) {
         setEmailVerified(true);
         setError(null)
@@ -53,7 +50,7 @@ export default function SignUpComponent() {
     <>
       {!emailVerified ? (
         <div className={"flex flex-col gap-6"}>
-          <Card>
+          <Card >
             <CardHeader className="text-center">
               <CardTitle className="text-2xl font-header-font">
                 Welcome to AstroDecks
