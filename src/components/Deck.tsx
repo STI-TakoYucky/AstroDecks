@@ -57,7 +57,7 @@ export default function Deck({ deck }: { deck: DeckInterface }) {
             </div>
             <h2 className="text-sm truncate text-black-200">{username}</h2>
           </div>
-          <div className="text-background flex items-center">
+          <div className="dark:text-background text-foreground flex items-center">
             <Rocket size={15} />
             <p className="font-semibold px-1">{deck.cards.length}</p>
           </div>

@@ -1,5 +1,5 @@
 import { Layers, Users } from "lucide-react";
-
+import Logo from '/images/AstroDecksLogo.svg'
 import {
   Sidebar,
   SidebarContent,
@@ -30,8 +30,8 @@ export function AppSidebar() {
     <Sidebar>
       <SidebarContent className="transition-theme">
         <SidebarGroup className="!px-0">
-          <SidebarGroupLabel className="text-xl md:text-2xl font-bold font-header-font dark:text-foreground px-5 cursor-pointer text-primary">
-            AstroDecks
+          <SidebarGroupLabel className="text-xl md:text-2xl font-bold font-header-font dark:text-foreground px-5 flex items-center gap-2 cursor-pointer text-primary">
+            <div><img src={Logo} alt="AstroDecksLogo" className="w-[2rem] h-[2rem]"/> </div> AstroDecks 
           </SidebarGroupLabel>
           <SidebarGroupContent className="mt-4">
             <SidebarMenu>

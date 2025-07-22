@@ -12,6 +12,7 @@ import { Label } from "@/components/ui/label"
 import { useState, type FormEvent } from "react"
 import axios from "axios"
 import { useNavigate } from "react-router"
+import Logo from '/images/AstroDecksLogo.svg'
 
 export default function SignInComponent() {
 
@@ -24,7 +25,8 @@ export default function SignInComponent() {
   const handleSignUp = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     try {
-      const { status } = await axios.post(`${import.meta.env.VITE_API_URL}/api/protected/sign-in`,{ email, password }, {withCredentials: true});
+      const { data, status } = await axios.post(`${import.meta.env.VITE_API_URL}/api/protected/sign-in`,{ email, password }, {withCredentials: true});
+      console.log(data.message)
       if (status == 200) {
         setError(null)
         setSuccess("Logged in successfully")
@@ -40,9 +42,9 @@ export default function SignInComponent() {
  
   return (
     <div className={cn("flex flex-col gap-6")}>
-      <Card className="">
+      <Card className="bg-white text-black-200">
         <CardHeader className="text-center">
-          <CardTitle className="text-2xl font-header-font">Welcome to AstroDecks</CardTitle>
+          <CardTitle className="text-4xl font-header-font text-center flex items-center justify-center gap-2 mb-2"><div><img src={Logo} alt="AstroDecksLogo" className="w-[3rem] h-[3rem] "/> </div>AstroDecks</CardTitle>
           <CardDescription>
             A free flashcard app for every student
           </CardDescription>
