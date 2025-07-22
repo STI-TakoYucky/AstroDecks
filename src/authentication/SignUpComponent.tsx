@@ -11,6 +11,7 @@ import { Label } from "@/components/ui/label";
 import axios from "axios";
 import { useState, type FormEvent } from "react";
 import UsernameComponent from "./ConfirmSignUpComponent";
+import Logo from '/images/AstroDecksLogo.svg'
 
 export default function SignUpComponent() {
   const [email, setEmail] = useState<string>("");
@@ -53,7 +54,7 @@ export default function SignUpComponent() {
           <Card >
             <CardHeader className="text-center">
               <CardTitle className="text-2xl font-header-font">
-                Welcome to AstroDecks
+                <CardTitle className="text-4xl font-header-font text-center flex items-center justify-center gap-2 mb-2"><div><img src={Logo} alt="AstroDecksLogo" className="w-[3rem] h-[3rem] "/> </div>AstroDecks</CardTitle>
               </CardTitle>
               <CardDescription>Sign up to get you started</CardDescription>
             </CardHeader>

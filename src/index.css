@@ -47,7 +47,7 @@ body {
   /* Typography */
   --font-body-font: "Onest";
   --font-header-font: "Rubik";
-  --tracking-header: 0.3rem;
+  --tracking-header: 0.1rem;
 
   /* Border radius */
   --radius-sm: calc(var(--radius) - 4px);
