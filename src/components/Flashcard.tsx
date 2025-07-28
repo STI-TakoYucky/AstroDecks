@@ -1,7 +1,7 @@
 import { useState } from "react";
 
-export default function Flashcard({front, back}: {front: string, back: string}) {
-  const [isFlipped, setFlipped] = useState(false)
+export default function Flashcard({front, back, definitionsFirst}: {front: string, back: string, definitionsFirst: boolean}) {
+  const [isFlipped, setFlipped] = useState<boolean>(definitionsFirst === true && true)
   return (
     <div className="w-[80%] max-w-[40rem] h-[50vw] min-h-[15rem] max-h-[25rem] [perspective:800px]" onClick={() => setFlipped((prev) => back != "" && !prev)}>
       <div

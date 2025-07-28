@@ -10,6 +10,7 @@ import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import isEqual from 'lodash.isequal';
 import { debounce } from "lodash";
+import { LearnDeckSettings } from "@/components/LearnDeckSettings";
 
 export default function DeckDetails() {
   const dispatch = useAppDispatch();
@@ -19,6 +20,7 @@ export default function DeckDetails() {
   const didMountRef = useRef(false);
 
   const [loading, setLoading] = useState<boolean>(false);
+  const [learnDeckSettings, setLearnDeckSettings] = useState(false)
   const [hasUnsavedChanges, setUnsavedChanges] = useState(false);
   const [isPublic, setPublic] = useState<boolean | null>(null)
 
@@ -91,9 +93,17 @@ export default function DeckDetails() {
     };
   }, [isPublic]);
 
+  const learnDeckHandler = () => {
+    setLearnDeckSettings(true)
+  }
 
-
-
+  const confirmDeckSettingsHandler = (definitionsFirst: boolean) => {
+    if (definitionsFirst) {
+      navigate(`/learn/${deck?._id}?definitionsFirst=true`)
+    } else {
+      navigate(`/learn/${deck?._id}`)
+    }
+  }
   const handleSubmit = (cardData: CardInterface) => {
     dispatch(addCard({ _id: deck?._id, cardData: cardData }));
     setUnsavedChanges(true);
@@ -159,12 +169,8 @@ export default function DeckDetails() {
                 </Button>
               </FlashcardDialog>
 
-              <Button
-                className="min-w-[7rem]"
-                onClick={() => navigate(`/learn/${deck?._id}`)}
-              >
-                Learn Deck
-              </Button>
+              <Button className="min-w-[7rem]" onClick={learnDeckHandler}>Learn Deck</Button>
+              <LearnDeckSettings title={deck.title} open={learnDeckSettings} onOpenChange={setLearnDeckSettings} desc={""} handleSubmit={confirmDeckSettingsHandler}></LearnDeckSettings>
 
               {hasUnsavedChanges && (
                 <Button

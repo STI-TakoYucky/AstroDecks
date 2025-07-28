@@ -36,7 +36,7 @@ export interface AppCustomAlert {
   title: string,
   desc: string,
   open?: boolean;
-  handleSubmit: (...args: any[]) => void;
+  handleSubmit?: any;
   onOpenChange?: (open: boolean) => void;
   children?: React.ReactNode,
 }
