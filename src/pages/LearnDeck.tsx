@@ -6,11 +6,13 @@ import axios from 'axios';
 import _ from 'lodash';
 import { ChevronLeft } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom'
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom'
 
 export default function LearnDeck() {   
 
     const query = useParams<{ id: string }>();
+    const [searchParams] = useSearchParams();
+    const definitionsFirst = searchParams.get("definitionsFirst") === "true";
     const [cards, setCards] = useState<CardInterface[]>([])
     const [cardIndex, setCardIndex] = useState<number>(0)
     const user = useAppSelector(state => state.user._id)
@@ -77,7 +79,7 @@ export default function LearnDeck() {
             </section>
             
                 { cardIndex != cards.length ?
-                    <Flashcard key={cardIndex} front={cards[cardIndex]?.term} back={cards[cardIndex]?.definition || ""}></Flashcard>:
+                    <Flashcard key={cardIndex} definitionsFirst={definitionsFirst} front={cards[cardIndex]?.term} back={cards[cardIndex]?.definition || ""}></Flashcard>:
                     <div className='text-center'>
                         <h1 className="text-4xl font-semibold mb-10">
                             You have completed this deck!

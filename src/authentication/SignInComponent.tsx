@@ -26,7 +26,7 @@ export default function SignInComponent() {
     e.preventDefault()
     try {
       const { data, status } = await axios.post(`${import.meta.env.VITE_API_URL}/api/protected/sign-in`,{ email, password }, {withCredentials: true});
-      console.log(data.message)
+      console.log(data)
       if (status == 200) {
         setError(null)
         setSuccess("Logged in successfully")

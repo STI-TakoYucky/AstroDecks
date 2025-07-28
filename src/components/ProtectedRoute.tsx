@@ -21,13 +21,19 @@ export default function ProtectedRoute({ children }: { children: JSX.Element }) 
     check();
   }, [authorized]);
 
-  if (authorized === null) return (
-    <div className="bg-background flex items-center justify-center flex-col h-screen">
-      <div className="rounded-full border-primary border-t-transparent border-4 w-10 h-10 animate-spin"></div>
-      <h1 className="font-header-font font-semibold text-3xl mt-7">Loading decks...</h1>
-      <p className=" !text-sm text-foreground/80">This may take a while.</p>
-    </div>
-  );
-  if (!authorized) return <Navigate to="/sign-in" replace />;
-  return children;
-}
+  if (authorized === null) {
+      return (
+        <div className="flex items-center justify-center flex-col h-screen">
+          <div className="rounded-full border-primary border-t-transparent border-4 w-10 h-10 animate-spin"></div>
+          <h1 className="font-header-font font-semibold text-3xl mt-7">Loading decks...</h1>
+          <p className=" !text-sm text-foreground/80">This may take a while.</p>
+        </div>
+      );
+    }
+
+    if (authorized === false) {
+      return <Navigate to="/sign-in" replace />;
+    }
+
+    return children;
+  }
