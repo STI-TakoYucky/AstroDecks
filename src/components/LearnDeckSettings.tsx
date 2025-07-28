@@ -13,7 +13,7 @@ import type { AppCustomAlert } from "@/types"
 import { Switch } from "@/components/ui/switch";
 import { useState } from "react";
 
-export function LearnDeckSettings({title, children, open, onOpenChange, handleSubmit}: AppCustomAlert) {
+export function LearnDeckSettings({children, open, onOpenChange, handleSubmit}: AppCustomAlert) {
 
     const [isDefinitionsFirst, setDefinitionsFirst] = useState<boolean>(false)
 
