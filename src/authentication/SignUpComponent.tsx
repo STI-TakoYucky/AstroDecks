@@ -7,11 +7,11 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import axios from "axios";
 import { useState, type FormEvent } from "react";
 import UsernameComponent from "./ConfirmSignUpComponent";
 import Logo from '/images/AstroDecksLogo.svg'
+import { Eye, LockKeyhole, Mail } from "lucide-react";
 
 export default function SignUpComponent() {
   const [email, setEmail] = useState<string>("");
@@ -20,6 +20,8 @@ export default function SignUpComponent() {
   const [username, setUsername] = useState<string>("")
   const [error, setError] = useState<string | null>(null);
   const [emailVerified, setEmailVerified] = useState<boolean | null>(null);
+  const [showPassword, setShowPassword] = useState<boolean>(false)
+  const [showConfirmPassword, setShowConfirmPassword] = useState<boolean>(false)
 
   const handleVerifyEmail = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -51,10 +53,10 @@ export default function SignUpComponent() {
     <>
       {!emailVerified ? (
         <div className={"flex flex-col gap-6"}>
-          <Card >
+          <Card className="rounded-md">
             <CardHeader className="text-center">
               <CardTitle className="text-2xl font-header-font">
-                <CardTitle className="text-4xl font-header-font text-center flex items-center justify-center gap-2 mb-2"><div><img src={Logo} alt="AstroDecksLogo" className="w-[3rem] h-[3rem] "/> </div>AstroDecks</CardTitle>
+                <CardTitle className="text-4xl font-header-font text-center flex items-center justify-center gap-2 mb-2"><div><img src={Logo} alt="AstroDecksLogo" className="min-w-[3rem] h-[3rem] "/> </div>AstroDecks</CardTitle>
               </CardTitle>
               <CardDescription>Sign up to get you started</CardDescription>
             </CardHeader>
@@ -62,11 +64,12 @@ export default function SignUpComponent() {
               <form onSubmit={(e) => handleVerifyEmail(e)}>
                 <div className="grid gap-6">
                   <div className="grid gap-6">
-                    <div className="grid gap-3">
-                      <Label htmlFor="email">Email</Label>
+                    <div className="grid gap-3 relative">
+                      <Mail size={18} className="absolute bottom-[9px] left-3 text-gray-600"/>
                       <Input
                         id="email"
                         type="email"
+                        className="px-10"
                         placeholder="m@example.com"
                         onChange={(e) => setEmail(e.target.value)}
                         onInvalid={(e) => {
@@ -76,16 +79,16 @@ export default function SignUpComponent() {
                         required
                       />
                     </div>
-                    <div className="grid gap-3">
-                      <div className="flex items-center">
-                        <Label htmlFor="password">Password</Label>
-                      </div>
+                    <div className="grid gap-3 relative">
+                      <LockKeyhole size={18} className="absolute bottom-[9px] left-3 text-gray-600"/>
                       <Input
                         id="password"
-                        type="password"
                         pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$"
                         onChange={(e) => setPassword(e.target.value)}
                         required
+                        className="px-10"
+                        placeholder="Password"
+                        type={showPassword ? "text": "password"}
                         onInvalid={(e) => {
                           e.preventDefault();
                           const validity = e.currentTarget.validity;
@@ -99,16 +102,22 @@ export default function SignUpComponent() {
                           }
                         }}
                       />
+                      <button type="button" className="absolute bottom-[7px] cursor-pointer right-3 text-gray-600" onClick={() => setShowPassword(prev => !prev)}>
+                        <Eye size={22}/>
+                      </button>
                     </div>
-                    <div className="grid gap-3">
-                      <div className="flex items-center">
-                        <Label htmlFor="confirmPassword">Confirm Password</Label>
-                      </div>
+                    <div className="grid gap-3 relative">
+                      <LockKeyhole size={18} className="absolute bottom-[9px] left-3 text-gray-600"/>
                       <Input
                         id="confirmPassword"
-                        type="password"
+                        placeholder="Confirm Password"
+                        className="px-10"
+                        type={showConfirmPassword ? "text": "password"}
                         onChange={(e) => setConfirmPassword(e.target.value)}
                       />
+                      <button className="absolute bottom-[7px] cursor-pointer right-3 text-gray-600" type="button" onClick={() => setShowConfirmPassword(prev => !prev)}>
+                        <Eye size={22}/>
+                      </button>
                     </div>
                     <div>
                       {error && <p className="text-red-600">{error}</p>}
