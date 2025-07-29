@@ -8,11 +8,11 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
 import { useState, type FormEvent } from "react"
 import axios from "axios"
 import { useNavigate } from "react-router"
 import Logo from '/images/AstroDecksLogo.svg'
+import { Eye, LockKeyhole, Mail } from "lucide-react"
 
 export default function SignInComponent() {
 
@@ -21,6 +21,7 @@ export default function SignInComponent() {
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState<string | null>(null)
   const navigate = useNavigate()
+  const [showPassword, setShowPassword] = useState(false)
 
   const handleSignUp = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -42,9 +43,9 @@ export default function SignInComponent() {
  
   return (
     <div className={cn("flex flex-col gap-6")}>
-      <Card className="bg-white text-black-200">
+      <Card className="bg-white text-black-200 rounded-md">
         <CardHeader className="text-center">
-          <CardTitle className="text-4xl font-header-font text-center flex items-center justify-center gap-2 mb-2"><div><img src={Logo} alt="AstroDecksLogo" className="w-[3rem] h-[3rem] "/> </div>AstroDecks</CardTitle>
+          <CardTitle className="text-4xl font-header-font text-center flex items-center justify-center gap-2 mb-2"><div><img src={Logo} alt="AstroDecksLogo" className="min-w-[3rem] h-[3rem] "/> </div>AstroDecks</CardTitle>
           <CardDescription>
             A free flashcard app for every student
           </CardDescription>
@@ -53,12 +54,14 @@ export default function SignInComponent() {
           <form onSubmit={e => handleSignUp(e)}>
             <div className="grid gap-6">
               <div className="grid gap-6">
-                    <div className="grid gap-3">
-                      <Label htmlFor="email">Email</Label>
+                    <div className="grid gap-3 relative">
+                      <Mail size={18} className="absolute bottom-[9px] left-3 text-gray-600"/>
                       <Input
                         id="email"
                         type="email"
                         onChange={(e) => setEmail(e.target.value)}
+                        className="px-10"
+                        placeholder="Email"
                         onInvalid={(e) => {
                           e.preventDefault()
                           setError("Email is invalid")
@@ -66,20 +69,23 @@ export default function SignInComponent() {
                         required
                       />
                     </div>
-                    <div className="grid gap-3">
-                      <div className="flex items-center">
-                        <Label htmlFor="password">Password</Label>
-                      </div>
+                    <div className="grid gap-3 relative">
+                      <LockKeyhole size={18} className="absolute bottom-[9px] left-3 text-gray-600"/>
                       <Input
                         id="password"
-                        type="password"
+                        placeholder="Password"
+                        type={showPassword ? "text": "password"}
                         onChange={(e) => setPassword(e.target.value)}
                         required
+                        className="px-10"
                         onInvalid={(e) => {
                           e.preventDefault();
                           setError("Invalid password");
                         }}
                       />
+                      <button type="button" className="absolute bottom-[7px] cursor-pointer right-3 text-gray-600" onClick={() => setShowPassword(prev => !prev)}>
+                        <Eye size={22}/>
+                      </button>
                     </div>
                     <div>
                       {error && <p className="text-red-600">{error}</p>}

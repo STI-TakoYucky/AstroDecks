@@ -1,8 +1,8 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { Label } from '@radix-ui/react-label';
 import axios from 'axios';
+import { User } from 'lucide-react';
 import { useState, type FormEvent } from 'react'
 import { useNavigate } from 'react-router';
 
@@ -44,10 +44,11 @@ export default function UsernameComponent({setEmailVerified, username, setUserna
           <form onSubmit={(e) => handleUsernameVerification(e)}>
             <div className="grid gap-6">
               <div className="grid gap-6">
-                <div className="grid gap-3">
-                  <Label htmlFor="email">Username</Label>
+                <div className="grid gap-3 relative">
+                  <User size={18} className="absolute bottom-[9px] left-3 text-gray-600"/>
                   <Input
                     type="text"
+                    className='px-10'
                     onChange={(e) => setUsername(e.target.value)}
                     pattern='^.{5,30}$'
                     required
