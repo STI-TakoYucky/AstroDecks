@@ -5,8 +5,8 @@ import { Button } from "@/components/ui/button";
 import { useAppDispatch, useAppSelector } from "@/hooks/reduxHooks";
 import { addCard, changeVisibility, fetchDecks, updateDeckCards } from "@/state/userDecks/userDecksSlice";
 import type { CardInterface, DeckInterface } from "@/types";
-import { Loader2, LockKeyhole, Plus, UnlockKeyhole } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { LockKeyhole, Plus, UnlockKeyhole } from "lucide-react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { debounce } from "lodash";
 import { LearnDeckSettings } from "@/components/LearnDeckSettings";
@@ -32,7 +32,7 @@ export default function DeckDetails() {
     if (!deck && user._id) {
       dispatch(fetchDecks(user._id));
     }
-    
+
     if (deck) {
       setPublic(deck.public);
     }
