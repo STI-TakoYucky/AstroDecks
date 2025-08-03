@@ -54,10 +54,11 @@ export const deleteDeck = createAsyncThunk(
 
 export const updateDeckCards = createAsyncThunk(
   'userDecks/updateDeckCards',
-  async (data: DeckInterface, thunkAPI) => {
+  async (dataPayload: DeckInterface, thunkAPI) => {
 
     try {
-      await axios.patch(`${import.meta.env.VITE_API_URL}/api/decks/${data._id}`, {cards: data.cards})
+      const { data } = await axios.patch(`${import.meta.env.VITE_API_URL}/api/decks/${dataPayload._id}`, {cards: dataPayload.cards})
+      console.log(data)
     } catch (error: any) {
       return thunkAPI.rejectWithValue(error.response.data)
     }

@@ -13,7 +13,7 @@ export interface UserInterface {
 }
 
 export interface DeckInterface {
-  _id?: string
+  _id?: string //the id is optional because it is created in the backend
   title: string,
   authorID: string,
   color?: string,

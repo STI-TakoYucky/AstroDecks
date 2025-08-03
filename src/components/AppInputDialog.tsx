@@ -32,7 +32,7 @@ export default function AppInputDialog({ handleSubmit, inputFields, dialogTitle,
       { children && (<DialogTrigger asChild>
         {children}
       </DialogTrigger>)}
-      <DialogContent className="sm:max-w-[425px] bg-white dark:bg-foreground border-none dark:text-background" aria-describedby={description ? "dialog-description-id" : undefined}>
+      <DialogContent showCloseButton={false} className="sm:max-w-[425px] bg-white dark:bg-foreground border-none dark:text-background" aria-describedby={description ? "dialog-description-id" : undefined}>
         <form onSubmit={(e) => {handleSubmit(e)}} className="flex-col gap-8 flex">
           <DialogHeader>
             <DialogTitle className="text-2xl">{dialogTitle}</DialogTitle>

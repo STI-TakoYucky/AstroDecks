@@ -82,9 +82,9 @@ export default function CommunityDeckDetails() {
       <section className="h-[80%]">
         {!cards || cards.length === 0 ? (
           <article className="w-full h-[80%] items-center justify-center flex-col flex gap-5">
-            <h1 className="font-semibold text-4xl">
+            <h2 className="font-semibold text-4xl">
               This public deck has no cards yet.
-            </h1>
+            </h2>
           </article>
         ) : (
           <FlashcardsPreview deck={deck!} cards={cards}></FlashcardsPreview>
