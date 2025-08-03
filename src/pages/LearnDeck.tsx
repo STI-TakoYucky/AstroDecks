@@ -73,7 +73,7 @@ export default function LearnDeck() {
         </nav>
         <section className='flex flex-col items-center justify-around h-full'>
             <section className='w-full flex justify-center'>
-                <div className='w-[80%] max-w-[40rem] border-2 rounded-md h-6 overflow-hidden !border-foreground'>
+                <div className='w-[100%] max-w-[40rem] border-2 rounded-md h-6 overflow-hidden !border-foreground'>
                     <div className={`bg-green-600 h-full transition-all duration-300`} style={{ width: `${progress}%` }}></div>
                 </div>
             </section>
@@ -88,7 +88,7 @@ export default function LearnDeck() {
                     </div>
                 }
 
-            <nav className='flex gap-5 w-full justify-center'>
+            <nav className='flex gap-2 w-full justify-center'>
                 <Button type='button' variant={"default"} onClick={handleDecrement}>Back</Button>
                 <Button type='button' variant={"default"} onClick={handleIncrement}>Next</Button>
             </nav>

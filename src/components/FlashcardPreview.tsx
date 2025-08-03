@@ -31,7 +31,7 @@ export default function FlashcardComponent({
         >
           {/* TERM */}
           <div className="md:w-1/2 p-4">
-            <p className="whitespace-pre-line text-gray-900 font-medium !text-xl">
+            <p className="whitespace-pre-line text-gray-900 font-medium md:!text-xl">
               {item.term}
             </p>
           </div>
@@ -43,7 +43,7 @@ export default function FlashcardComponent({
 
           {/* DEFINITION */}
           <div className="md:w-1/2 p-4 flex flex-col justify-between border-t md:border-t-0 md:border-l border-gray-200">
-            <p className="whitespace-pre-line text-black-100 !text-xl">
+            <p className="whitespace-pre-line text-black-100 md:!text-xl">
               {item.definition}
             </p>
 

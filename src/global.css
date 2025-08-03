@@ -6,10 +6,6 @@
   .main-container {
     padding-inline: 2rem;
   }
-
-  p {
-    font-size: 14px !important;
-  }
 }
 
 @media (max-width: 375px) {

@@ -8,62 +8,36 @@ import type { CardInterface, DeckInterface } from "@/types";
 import { Loader2, LockKeyhole, Plus, UnlockKeyhole } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import isEqual from 'lodash.isequal';
 import { debounce } from "lodash";
 import { LearnDeckSettings } from "@/components/LearnDeckSettings";
+import { AlertComponent } from "@/components/Alert";
 
 export default function DeckDetails() {
   const dispatch = useAppDispatch();
   const query = useParams<{ id: string }>();
   const user = useAppSelector((state) => state.user);
   const navigate = useNavigate()
-  const didMountRef = useRef(false);
 
-  const [loading, setLoading] = useState<boolean>(false);
   const [learnDeckSettings, setLearnDeckSettings] = useState(false)
   const [hasUnsavedChanges, setUnsavedChanges] = useState(false);
   const [isPublic, setPublic] = useState<boolean | null>(null)
+  const [status, setStatus] = useState<"success" | "error" | null>(null)
 
-  // the reference to all the user's decks
-  const decks = useAppSelector((state) => state.userDecks.decks);
-  // the single deck filtered out
-  const [deck, setDeck] = useState<DeckInterface>();
+  // the reference to all the user's decks narrwed down to the specific deck
+  const deck: DeckInterface | undefined = useAppSelector((state) => state.userDecks.decks.find(deck => deck._id === query.id));
   // the cards of the filtered deck
   const cards = deck?.cards;
-  const prevDeckRef = useRef<DeckInterface | undefined>(undefined);
-
-  // check if the decks changed
-  useEffect(() => {
-    // if user id is missing, return
-    if (!user._id) return;
-    // if deck is missing fetch the deck and return
-    if (!deck) { dispatch(fetchDecks(user._id)); return }
-    if (!isPublic) setPublic(deck.public)
-
-      // Skip first run
-    if (!didMountRef.current) {
-      didMountRef.current = true;
-      prevDeckRef.current = deck;
-      return;
-    }
-
-    // Don't run comparison until both are defined
-    if (deck && prevDeckRef.current) {
-      const hasChanged = !isEqual(prevDeckRef.current, deck);
-      if (hasChanged) {
-        setUnsavedChanges(true);
-      }
-      prevDeckRef.current = deck;
-    }
-  }, [deck, user._id]);
 
   useEffect(() => {
-    if (!decks) return;
-      const found = decks.find((item: DeckInterface) => item._id === query.id);
-    if (found) {
-      setDeck(found);
+    if (!deck && user._id) {
+      dispatch(fetchDecks(user._id));
     }
-  }, [query, decks]);
+    
+    if (deck) {
+      setPublic(deck.public);
+    }
+  }, [deck, user._id, dispatch]);
+
 
   // prevents the users from going to a different page when the changes arent saved
   useEffect(() => {
@@ -77,7 +51,7 @@ export default function DeckDetails() {
     return () => window.removeEventListener("beforeunload", handleBeforeUnload);
   }, [hasUnsavedChanges]);
 
-  //debounce
+  //debounce for toggling visibility
   useEffect(() => {
     if (!deck || !deck._id) return;
 
@@ -93,6 +67,29 @@ export default function DeckDetails() {
     };
   }, [isPublic]);
 
+  //autosave debounce so that it doesnt push everything on req write
+  useEffect(() => {
+    if (!deck || !deck._id) return;
+    setUnsavedChanges(true);
+
+    const debouncedToggle = debounce(() => {
+      if (deck) {
+        dispatch(updateDeckCards(deck))
+      }
+      setUnsavedChanges(false);
+      setStatus("success")
+      setTimeout(() => {
+        setStatus(null)
+      }, 4000);
+    }, 1000)
+
+    debouncedToggle()
+
+    return () => {
+      debouncedToggle.cancel?.();
+    };
+  }, [deck])
+
   const learnDeckHandler = () => {
     setLearnDeckSettings(true)
   }
@@ -106,31 +103,19 @@ export default function DeckDetails() {
   }
   const handleSubmit = (cardData: CardInterface) => {
     dispatch(addCard({ _id: deck?._id, cardData: cardData }));
-    setUnsavedChanges(true);
-  };
-
-  // push to db
-  const saveChanges = () => {
-    setLoading(true);
-    if (!deck) return;
-    dispatch(updateDeckCards(deck)).then(() => {
-      setTimeout(() => {
-        setLoading(false);
-        setUnsavedChanges(false);
-      }, 2000);
-    });
   };
 
   return (
     <main className="main-container">
+    {status && <AlertComponent message={"Changes saved"} type={"success"}></AlertComponent>}
       {
         deck && (deck.public || deck.authorID === user._id) && 
         <header className="mb-8">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className={`w-7 h-7 rounded-md`} style={{backgroundColor: deck?.color}}></div>
-              <div className="flex items-center">
-                <h1 className="text-md md:text-3xl tracking-wide font-semibold !max-w-[30rem] truncate">
+              <div className="flex items-center min-w-[70vw] !max-w-[20vw] gap-2">
+                <h1 className="md:text-3xl text-2xl tracking-wide font-semibold truncate">
                   {deck?.title}
                 </h1>
                 {deck && <DeckDropdown deck={deck}></DeckDropdown>}
@@ -144,7 +129,7 @@ export default function DeckDetails() {
                 <img className="rounded-full" src={user.imageUrl}></img>
               )}
             </div>
-            <h2>{user?.username}</h2>
+            <p>{user?.username}</p>
           </div>
         </header>
       }
@@ -169,23 +154,12 @@ export default function DeckDetails() {
                 </Button>
               </FlashcardDialog>
 
-              <Button className="min-w-[7rem]" onClick={learnDeckHandler}>Learn Deck</Button>
+              <Button onClick={learnDeckHandler}>Learn Deck</Button>
               <LearnDeckSettings title={deck.title} open={learnDeckSettings} onOpenChange={setLearnDeckSettings} desc={""} handleSubmit={confirmDeckSettingsHandler}></LearnDeckSettings>
-
-              {hasUnsavedChanges && (
-                <Button
-                  onClick={saveChanges}
-                  disabled={loading}
-                  className="min-w-[7rem] bg-[#3C8D63] hover:!bg-[#3C8D63]/70"
-                >
-                  {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                  {loading ? "Loading" : "Save Changes"}
-                </Button>
-              )}
             </div>
           {!cards || cards.length === 0 ? (
             <article className="w-full h-[80%] items-center justify-center flex-col flex gap-5">
-              <h1 className="font-semibold text-4xl">
+              <h1 className="font-semibold text-4xl text-center">
                 Add a card to get started
               </h1>
               <FlashcardDialog handleSubmit={handleSubmit}>

@@ -13,7 +13,7 @@ export interface UserInterface {
 }
 
 export interface DeckInterface {
-  _id?: string
+  _id: string
   title: string,
   authorID: string,
   color?: string,
