@@ -3,7 +3,7 @@ import { DeckDropdown } from "@/components/DeckDropdown";
 import FlashcardComponent from "@/components/FlashcardPreview";
 import { Button } from "@/components/ui/button";
 import { useAppDispatch, useAppSelector } from "@/hooks/reduxHooks";
-import { addCard, changeVisibility, fetchDecks, updateDeckCards } from "@/state/userDecks/userDecksSlice";
+import { addCard, changeVisibility, updateDeckCards } from "@/state/userDecks/userDecksSlice";
 import type { CardInterface, DeckInterface } from "@/types";
 import { LockKeyhole, Plus, UnlockKeyhole } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -11,6 +11,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { debounce } from "lodash";
 import { LearnDeckSettings } from "@/components/LearnDeckSettings";
 import { AlertComponent } from "@/components/Alert";
+import axios from "axios";
 
 export default function DeckDetails() {
   const dispatch = useAppDispatch();
@@ -23,20 +24,34 @@ export default function DeckDetails() {
   const [isPublic, setPublic] = useState<boolean | null>(null)
   const [status, setStatus] = useState<"success" | "error" | null>(null)
 
+  const userDeck = useAppSelector((state) => state.userDecks.decks.find(deck => deck._id === query.id));
   // the reference to all the user's decks narrwed down to the specific deck
-  const deck: DeckInterface | undefined = useAppSelector((state) => state.userDecks.decks.find(deck => deck._id === query.id));
+  const [deck, setDeck] = useState<DeckInterface | undefined>(userDeck)
   // the cards of the filtered deck
   const cards = deck?.cards;
+  const [isOwner, setIsOwner] = useState<boolean | null>(null)
 
   useEffect(() => {
-    if (!deck && user._id) {
-      dispatch(fetchDecks(user._id));
+
+    const fetchDeckDetails = async () => {
+
+      if (userDeck) {
+        //if user has the deck based on the query, just get it in the redux state
+        setDeck(userDeck)
+        setPublic(userDeck.public);
+        setIsOwner(userDeck.authorID === user._id)
+      } else {
+        //if user doesnt have the deck, fetch it on the database
+          const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/api/decks/deck/${query.id}`);
+          setDeck(data)
+          setPublic(data.public);
+          setIsOwner(data.authorID === user._id)
+      }
     }
 
-    if (deck) {
-      setPublic(deck.public);
-    }
-  }, [deck, user._id, dispatch]);
+    fetchDeckDetails()
+    
+  }, [query.id]);
 
 
   // prevents the users from going to a different page when the changes arent saved
@@ -68,8 +83,9 @@ export default function DeckDetails() {
   }, [isPublic]);
 
   //autosave debounce so that it doesnt push everything on req write
+  //prevent saving if the user does not own the deck
   useEffect(() => {
-    if (!deck || !deck._id) return;
+    if (!deck || !deck._id || isOwner === false) return;
     setUnsavedChanges(true);
 
     const debouncedToggle = debounce(() => {
@@ -109,7 +125,7 @@ export default function DeckDetails() {
     <main className="main-container">
     {status && <AlertComponent message={"Changes saved"} type={"success"}></AlertComponent>}
       {
-        deck && (deck.public || deck.authorID === user._id) && 
+        deck && (deck.public || isOwner) && 
         <header className="mb-8">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
@@ -135,38 +151,37 @@ export default function DeckDetails() {
       }
 
       {
-        deck && (deck.public || deck.authorID === user._id) ? 
+        deck && ((isOwner == false && deck.public) || (isOwner == true))? 
         <section className="h-[80%]">
+
           <div className="flex items-center gap-2 mb-8 flex-wrap">
-              <Button
-                type="button" 
-                onClick={() => setPublic((prev) => !prev)}
-                variant={isPublic ? "outline": "default"}
-                className={isPublic ? "!bg-background hover:!bg-foreground hover:!text-background !border-foreground text-foreground": "bg-foreground text-background hover:!bg-foreground/90"}
-              >
-                {isPublic ? <UnlockKeyhole /> : <LockKeyhole />}
+              { deck.authorID === user._id && (
+                <>
+                  <Button
+                    type="button" 
+                    onClick={() => setPublic((prev) => !prev)}
+                    variant={isPublic ? "outline": "default"}
+                    className={isPublic ? "!bg-background hover:!bg-foreground hover:!text-background !border-foreground text-foreground": "bg-foreground text-background hover:!bg-foreground/90"}
+                  >
+                    {isPublic ? <UnlockKeyhole /> : <LockKeyhole />}
 
-                {isPublic ? "Public" : "Private"}
-              </Button>
-              <FlashcardDialog handleSubmit={handleSubmit}>
-                <Button type="button" variant={"default"}>
-                  <Plus /> Add Card
-                </Button>
-              </FlashcardDialog>
-
+                    {isPublic ? "Public" : "Private"}
+                  </Button>
+                  <FlashcardDialog handleSubmit={handleSubmit}>
+                    <Button type="button" variant={"default"}>
+                      <Plus /> Add Card
+                    </Button>
+                  </FlashcardDialog>
+                </>
+                )}
               <Button onClick={learnDeckHandler}>Learn Deck</Button>
               <LearnDeckSettings title={deck.title} open={learnDeckSettings} onOpenChange={setLearnDeckSettings} desc={""} handleSubmit={confirmDeckSettingsHandler}></LearnDeckSettings>
             </div>
           {!cards || cards.length === 0 ? (
             <article className="w-full h-[80%] items-center justify-center flex-col flex gap-5">
               <h1 className="font-semibold text-4xl text-center">
-                Add a card to get started
+                { isOwner ? "Add a card to get started.": "This deck has no cards yet."}
               </h1>
-              <FlashcardDialog handleSubmit={handleSubmit}>
-                <Button type="button" variant={"default"}>
-                  <Plus /> Add Card
-                </Button>
-              </FlashcardDialog>
             </article>
           ) : (
             <FlashcardComponent deck={deck} cards={cards}></FlashcardComponent>
