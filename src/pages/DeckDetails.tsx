@@ -3,7 +3,7 @@ import { DeckDropdown } from "@/components/DeckDropdown";
 import FlashcardComponent from "@/components/FlashcardPreview";
 import { Button } from "@/components/ui/button";
 import { useAppDispatch, useAppSelector } from "@/hooks/reduxHooks";
-import { addCard, changeVisibility, fetchDecks, updateDeckCards } from "@/state/userDecks/userDecksSlice";
+import { addCard, changeVisibility, updateDeckCards } from "@/state/userDecks/userDecksSlice";
 import type { CardInterface, DeckInterface } from "@/types";
 import { LockKeyhole, Plus, UnlockKeyhole } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -180,7 +180,7 @@ export default function DeckDetails() {
           {!cards || cards.length === 0 ? (
             <article className="w-full h-[80%] items-center justify-center flex-col flex gap-5">
               <h1 className="font-semibold text-4xl text-center">
-                { isOwner ? "Add a card to get started": "This deck has no cards yet."}
+                { isOwner ? "Add a card to get started.": "This deck has no cards yet."}
               </h1>
             </article>
           ) : (
