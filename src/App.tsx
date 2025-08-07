@@ -24,7 +24,7 @@ function App() {
           <Route path="/" element={<Navigate to="/my-decks" replace />} />
 
           <Route path="my-decks" element={<MyDecks />} />
-          <Route path="my-decks/:id" element={<DeckDetails />} />
+          <Route path="deck/:id" element={<DeckDetails />} />
           <Route path="learn/:id" element={<LearnDeck />} />
 
           <Route path="community-decks" element={<CommunityDecks />} />

@@ -29,7 +29,7 @@ export default function AppShareLinkDialog({open, onOpenChange, url}: {open: boo
             </Label>
             <Input
               id="link"
-              defaultValue={`http://localhost:5173/community-decks/${url}`}
+              defaultValue={`${import.meta.env.VITE_CLIENT_URL}/deck/${url}`}
               readOnly
             />
           </div>

@@ -33,11 +33,7 @@ export default function Deck({ deck }: { deck: DeckInterface }) {
   }, []);
 
   const deckOnClickHandler = () => {
-    if (deck.authorID === user._id) {
-      navigate(`/my-decks/${deck._id}`)
-    } else {
-      navigate(`/community-decks/${deck._id}`)
-    }
+      navigate(`/deck/${deck._id}`)
   }
 
   return (
