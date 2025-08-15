@@ -1,13 +1,14 @@
 import { AppSidebar } from "@/components/AppSidebar";
 import { SidebarProvider, useSidebar } from "@/components/ui/sidebar";
 import { Outlet, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { useAppDispatch } from "@/hooks/reduxHooks";
 import { fetchUser } from "../state/user/userSlice";
 import { Switch } from "@/components/ui/switch";
 import { LogOut, Moon, PanelLeft, Sun } from "lucide-react";
 import type { CSSProperties } from "react";
+import { AuthContext } from "@/components/AuthProvider";
 
 // ---- inner component to safely call useSidebar ----
 function InnerLayout() {
@@ -19,6 +20,7 @@ function InnerLayout() {
     () => localStorage.getItem("theme") || "light"
   );
   const [isProfileOpen, setProfileOpen] = useState<boolean>(false);
+  const { setAuthenticated } = useContext(AuthContext)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -51,6 +53,7 @@ function InnerLayout() {
       );
 
       if (status === 200) {
+        setAuthenticated(false)
         navigate("/sign-in");
       }
     } catch (error: any) {

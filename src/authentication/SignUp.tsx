@@ -1,11 +1,28 @@
+import { useContext, useEffect } from "react"
 import SignUpComponent from "./SignUpComponent"
+import { useNavigate } from "react-router"
+import { AuthContext } from "@/components/AuthProvider"
+import LoadingComponent from "@/components/LoadingComponent"
 
 function App() {
 
+  const { authenticated } = useContext(AuthContext)
+  const navigate = useNavigate()
+  
+    useEffect(() => {
+      if (authenticated) {
+        navigate('/my-decks')
+      }
+    }, [authenticated])
+
   return (
-    <main className='flex justify-center h-screen items-center bg-black-200 dark:bg-black-200'>
+    <main className='flex justify-center h-screen items-center bg-background'>
       <div className="max-w-[25rem] w-[25rem]">
-        <SignUpComponent></SignUpComponent>
+        { authenticated || authenticated == null ? (
+          <LoadingComponent></LoadingComponent>
+        ) : (
+          <SignUpComponent></SignUpComponent>
+        )}
       </div>
     </main>
   )

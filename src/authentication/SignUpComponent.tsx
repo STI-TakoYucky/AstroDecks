@@ -53,7 +53,7 @@ export default function SignUpComponent() {
     <>
       {!emailVerified ? (
         <div className={"flex flex-col gap-6"}>
-          <Card className="rounded-md">
+          <Card className="rounded-md dark:bg-foreground text-black-200">
             <CardHeader className="text-center">
               <CardTitle className="text-2xl font-header-font">
                 <CardTitle className="text-4xl font-header-font text-center flex items-center justify-center gap-2 mb-2"><div><img src={Logo} alt="AstroDecksLogo" className="min-w-[3rem] h-[3rem] "/> </div>AstroDecks</CardTitle>

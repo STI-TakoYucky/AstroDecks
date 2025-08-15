@@ -27,14 +27,11 @@ export default function DeckDetails() {
   const userDeck = useAppSelector((state) => state.userDecks.decks.find(deck => deck._id === query.id));
   // the reference to all the user's decks narrwed down to the specific deck
   const [deck, setDeck] = useState<DeckInterface | undefined>(userDeck)
-  // the cards of the filtered deck
-  const cards = deck?.cards;
+
   const [isOwner, setIsOwner] = useState<boolean | null>(null)
 
   useEffect(() => {
-
     const fetchDeckDetails = async () => {
-
       if (userDeck) {
         //if user has the deck based on the query, just get it in the redux state
         setDeck(userDeck)
@@ -51,7 +48,7 @@ export default function DeckDetails() {
 
     fetchDeckDetails()
     
-  }, [query.id]);
+  }, []);
 
 
   // prevents the users from going to a different page when the changes arent saved
@@ -85,18 +82,17 @@ export default function DeckDetails() {
   //autosave debounce so that it doesnt push everything on req write
   //prevent saving if the user does not own the deck
   useEffect(() => {
-    if (!deck || !deck._id || isOwner === false) return;
+    if (!deck || !deck._id || isOwner === false || !userDeck) return;
     setUnsavedChanges(true);
 
     const debouncedToggle = debounce(() => {
-      if (deck) {
-        dispatch(updateDeckCards(deck))
-      }
+      dispatch(updateDeckCards(userDeck))
+      setDeck(userDeck)
       setUnsavedChanges(false);
       setStatus("success")
       setTimeout(() => {
         setStatus(null)
-      }, 4000);
+      }, 1000);
     }, 1000)
 
     debouncedToggle()
@@ -104,7 +100,7 @@ export default function DeckDetails() {
     return () => {
       debouncedToggle.cancel?.();
     };
-  }, [deck])
+  }, [userDeck])
 
   const learnDeckHandler = () => {
     setLearnDeckSettings(true)
@@ -177,14 +173,14 @@ export default function DeckDetails() {
               <Button onClick={learnDeckHandler}>Learn Deck</Button>
               <LearnDeckSettings title={deck.title} open={learnDeckSettings} onOpenChange={setLearnDeckSettings} desc={""} handleSubmit={confirmDeckSettingsHandler}></LearnDeckSettings>
             </div>
-          {!cards || cards.length === 0 ? (
+          {!deck.cards || deck.cards.length === 0 ? (
             <article className="w-full h-[80%] items-center justify-center flex-col flex gap-5">
               <h1 className="font-semibold text-4xl text-center">
                 { isOwner ? "Add a card to get started.": "This deck has no cards yet."}
               </h1>
             </article>
           ) : (
-            <FlashcardComponent deck={deck} cards={cards}></FlashcardComponent>
+            <FlashcardComponent deck={deck} cards={deck.cards}></FlashcardComponent>
           )}
         </section> :
         <section className="h-[100%]">

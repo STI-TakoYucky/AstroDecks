@@ -8,11 +8,11 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
-import { useState, type FormEvent } from "react"
+import { useContext, useState, type FormEvent } from "react"
 import axios from "axios"
-import { useNavigate } from "react-router"
 import Logo from '/images/AstroDecksLogo.svg'
 import { Eye, LockKeyhole, Mail } from "lucide-react"
+import { AuthContext } from "@/components/AuthProvider"
 
 export default function SignInComponent() {
 
@@ -20,21 +20,17 @@ export default function SignInComponent() {
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState<string | null>(null)
-  const navigate = useNavigate()
   const [showPassword, setShowPassword] = useState(false)
+  const { setAuthenticated } = useContext(AuthContext)
 
   const handleSignUp = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     try {
-      const { data, status } = await axios.post(`${import.meta.env.VITE_API_URL}/api/protected/sign-in`,{ email, password }, {withCredentials: true});
-      console.log(data)
+      const { status } = await axios.post(`${import.meta.env.VITE_API_URL}/api/protected/sign-in`,{ email, password }, {withCredentials: true});
       if (status == 200) {
         setError(null)
         setSuccess("Logged in successfully")
-
-        setTimeout(() => {
-          navigate('/my-decks')
-        }, 2000);
+        setAuthenticated(true)
       }
     } catch (error: any) {
       setError(error.response.data.message);
@@ -43,7 +39,7 @@ export default function SignInComponent() {
  
   return (
     <div className={cn("flex flex-col gap-6")}>
-      <Card className="bg-white text-black-200 rounded-md">
+      <Card className="dark:bg-foreground text-black-200 rounded-md">
         <CardHeader className="text-center">
           <CardTitle className="text-4xl font-header-font text-center flex items-center justify-center gap-2 mb-2"><div><img src={Logo} alt="AstroDecksLogo" className="min-w-[3rem] h-[3rem] "/> </div>AstroDecks</CardTitle>
           <CardDescription>
