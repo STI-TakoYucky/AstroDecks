@@ -12,13 +12,11 @@ import "./global.css";
 import LearnDeck from "./pages/LearnDeck";
 import CommunityDeckDetails from "./pages/CommunityDeckDetails";
 import ProtectedRoute from "./components/ProtectedRoute";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 function App() {
 
-    const [theme, setTheme] = useState(
-      () => localStorage.getItem("theme") || "light"
-    );
+    const theme = localStorage.getItem("theme") || "light"
 
   useEffect(() => {
     const root = document.documentElement;

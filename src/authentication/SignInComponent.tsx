@@ -8,9 +8,8 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
-import { useContext, useEffect, useState, type FormEvent } from "react"
+import { useContext, useState, type FormEvent } from "react"
 import axios from "axios"
-import { useNavigate } from "react-router"
 import Logo from '/images/AstroDecksLogo.svg'
 import { Eye, LockKeyhole, Mail } from "lucide-react"
 import { AuthContext } from "@/components/AuthProvider"
