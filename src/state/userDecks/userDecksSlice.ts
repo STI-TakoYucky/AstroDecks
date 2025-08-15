@@ -58,7 +58,7 @@ export const updateDeckCards = createAsyncThunk(
 
     try {
       const { data } = await axios.patch(`${import.meta.env.VITE_API_URL}/api/decks/${dataPayload._id}`, {cards: dataPayload.cards})
-      console.log(data)
+      
     } catch (error: any) {
       return thunkAPI.rejectWithValue(error.response.data)
     }

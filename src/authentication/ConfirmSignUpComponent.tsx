@@ -33,7 +33,7 @@ export default function UsernameComponent({setEmailVerified, username, setUserna
 
   return (
     <div className={"flex flex-col gap-6"}>
-      <Card>
+      <Card className='dark:bg-foreground text-black-200'>
         <CardHeader className="text-center">
           <CardTitle className="text-2xl font-header-font">You are almost there!</CardTitle>
           <CardDescription>
