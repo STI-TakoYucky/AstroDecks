@@ -12,6 +12,7 @@ import { useState, type FormEvent } from "react";
 import UsernameComponent from "./ConfirmSignUpComponent";
 import Logo from '/images/AstroDecksLogo.svg'
 import { Eye, LockKeyhole, Mail } from "lucide-react";
+import { Spinner } from "@/components/ui/shadcn-io/spinner";
 
 export default function SignUpComponent() {
   const [email, setEmail] = useState<string>("");
@@ -22,8 +23,10 @@ export default function SignUpComponent() {
   const [emailVerified, setEmailVerified] = useState<boolean | null>(null);
   const [showPassword, setShowPassword] = useState<boolean>(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState<boolean>(false)
+  const [loading, setLoading] = useState(false);
 
   const handleVerifyEmail = async (e: FormEvent<HTMLFormElement>) => {
+    setLoading(true)
     e.preventDefault();
     setEmailVerified(null);
 
@@ -46,6 +49,8 @@ export default function SignUpComponent() {
     } catch (error: any) {
       setError(error.response.data.message);
       setEmailVerified(null)
+    } finally {
+      setLoading(false)
     }
   };
 
@@ -123,7 +128,7 @@ export default function SignUpComponent() {
                       {error && <p className="text-red-600">{error}</p>}
                     </div>
                     <Button type="submit" className="w-full">
-                      Sign Up
+                      {loading ? <>Loading <Spinner key={"circle"} variant={"circle"} /></> : "Sign Up"}
                     </Button>
                   </div>
                   <div className="text-center text-sm">
