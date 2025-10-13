@@ -64,7 +64,7 @@ function InnerLayout() {
   return (
     <>
       <AppSidebar />
-      <div className="w-full transition-theme">
+      <div className="w-full transition-theme -z-50">
         <header
           className={`transition-theme flex items-center ${
             isMobile ? "justify-between" : "justify-end"
