@@ -64,11 +64,11 @@ function InnerLayout() {
   return (
     <>
       <AppSidebar />
-      <div className="w-full transition-theme -z-50">
+      <div className="transition-theme">
         <header
           className={`transition-theme flex items-center ${
             isMobile ? "justify-between" : "justify-end"
-          } px-5 bg-background min-h-[5rem] sticky z-50 top-0 border-b-[1px] gap-5`}
+          } px-5 bg-background min-h-[5rem] sticky top-0 border-b-[1px] gap-5`}
         >
           {isMobile && (
             <PanelLeft className="cursor-pointer" onClick={toggleSidebar} />
