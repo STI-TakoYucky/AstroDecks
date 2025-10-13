@@ -13,6 +13,7 @@ import axios from "axios"
 import Logo from '/images/AstroDecksLogo.svg'
 import { Eye, LockKeyhole, Mail } from "lucide-react"
 import { AuthContext } from "@/components/AuthProvider"
+import { Spinner } from "@/components/ui/shadcn-io/spinner"
 
 export default function SignInComponent() {
 
@@ -22,8 +23,10 @@ export default function SignInComponent() {
   const [success, setSuccess] = useState<string | null>(null)
   const [showPassword, setShowPassword] = useState(false)
   const { setAuthenticated } = useContext(AuthContext)
+  const [loading, setLoading] = useState(false);
 
   const handleSignUp = async (e: FormEvent<HTMLFormElement>) => {
+    setLoading(true);
     e.preventDefault()
     try {
       const { status } = await axios.post(`${import.meta.env.VITE_API_URL}/api/protected/sign-in`,{ email, password }, {withCredentials: true});
@@ -34,6 +37,8 @@ export default function SignInComponent() {
       }
     } catch (error: any) {
       setError(error.response.data.message);
+    } finally {
+      setLoading(false);
     }
   }
  
@@ -88,7 +93,7 @@ export default function SignInComponent() {
                       {success && <p className="text-green-600">{success}</p>}
                     </div>
                     <Button type="submit" className="w-full">
-                      Sign In
+                      {loading ? <>Loading <Spinner key={"circle"} variant={"circle"} /></> : "Sign In"}
                     </Button>
                   </div>
               <div className="text-center text-sm">
