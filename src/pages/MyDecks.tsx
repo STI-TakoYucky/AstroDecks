@@ -39,7 +39,7 @@ export default function MyDecks() {
   return (
     <>
       <main className="main-container">
-        <section className="z-10 w-full mb-10">
+        <section className="w-full mb-10">
           <AppDialog handleSubmit={handleSubmit} dialogTitle={"Create Deck"} inputFields={AppDialogFields} open={open} onOpenChange={onOpenChange}>
             <Button
               type="button"

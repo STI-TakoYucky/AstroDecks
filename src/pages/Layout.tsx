@@ -68,7 +68,7 @@ function InnerLayout() {
         <header
           className={`transition-theme flex items-center ${
             isMobile ? "justify-between" : "justify-end"
-          } px-5 bg-background min-h-[5rem] sticky top-0 border-b-[1px] gap-5`}
+          } px-5 bg-background min-h-[5rem] sticky top-0 border-b-[1px] gap-5 z-50`}
         >
           {isMobile && (
             <PanelLeft className="cursor-pointer" onClick={toggleSidebar} />
