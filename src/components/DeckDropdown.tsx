@@ -18,7 +18,7 @@ export function DeckDropdown({ deck }: { deck: DeckInterface }) {
   const dispatch = useAppDispatch();
 
   const user = useAppSelector(state => state.user)
-  const [title, setTitle] = useState<string>("");
+  const [title, setTitle] = useState<string>(deck.title);
   const [isRenameOpen, setRenameOpen] = useState<boolean>(false);
   const [alertOpen, setAlertOpen] = useState<boolean>(false);
   const [isShareOpen, setShareOpen] = useState<boolean>(false)

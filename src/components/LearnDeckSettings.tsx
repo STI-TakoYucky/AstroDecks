@@ -28,7 +28,7 @@ export function LearnDeckSettings({children, open, onOpenChange, handleSubmit}: 
           <AlertDialogDescription className="text-dark-100">
             <div className="flex items-center gap-2">
                 <Switch onClick={() => setDefinitionsFirst((prev) => !prev)} className=" cursor-pointer shadow-md"/>
-                <p>Definitions first</p>
+                <p>Back first</p>
             </div>
           </AlertDialogDescription>
         </AlertDialogHeader>
