@@ -106,23 +106,24 @@ export default function DeckDetails() {
     setLearnDeckSettings(true)
   }
 
-  const confirmDeckSettingsHandler = (definitionsFirst: boolean) => {
-    if (definitionsFirst) {
-      navigate(`/learn/${deck?._id}?definitionsFirst=true`)
+  const confirmDeckSettingsHandler = (type: string) => {
+    if (type == "learn") {
+      navigate(`/learn/${deck?._id}?type=flashcard`)
     } else {
       navigate(`/learn/${deck?._id}`)
     }
   }
+
   const handleSubmit = (cardData: CardInterface) => {
     dispatch(addCard({ _id: deck?._id, cardData: cardData }));
   };
 
   return (
-    <main className="main-container">
+    <main>
     {status && <AlertComponent message={"Changes saved"} type={"success"}></AlertComponent>}
       {
         deck && (deck.public || isOwner) && 
-        <header className="mb-8">
+        <header className="fixed top-[2rem] dark:bg-background bg-background w-full main-container shadow-md !pt-[5rem] !pb-[2rem] !h-fit">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className={`w-7 h-7 rounded-md`} style={{backgroundColor: deck?.color}}></div>
@@ -143,14 +144,7 @@ export default function DeckDetails() {
             </div>
             <p>{user?.username}</p>
           </div>
-        </header>
-      }
-
-      {
-        deck && ((isOwner == false && deck.public) || (isOwner == true))? 
-        <section className="h-[80%]">
-
-          <div className="flex items-center gap-2 mb-8 flex-wrap">
+          <div className="flex items-center gap-2 my-8 flex-wrap">
               { deck.authorID === user._id && (
                 <>
                   <Button
@@ -173,6 +167,12 @@ export default function DeckDetails() {
               <Button onClick={learnDeckHandler}>Learn Deck</Button>
               <LearnDeckSettings title={deck.title} open={learnDeckSettings} onOpenChange={setLearnDeckSettings} desc={""} handleSubmit={confirmDeckSettingsHandler}></LearnDeckSettings>
             </div>
+        </header>
+      }
+
+      {
+        deck && ((isOwner == false && deck.public) || (isOwner == true))? 
+        <section className="h-[80%] mt-[16rem] main-container">
           {!deck.cards || deck.cards.length === 0 ? (
             <article className="w-full h-[80%] items-center justify-center flex-col flex gap-5">
               <h1 className="font-semibold text-4xl text-center">

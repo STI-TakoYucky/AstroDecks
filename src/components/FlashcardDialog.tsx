@@ -74,7 +74,7 @@ export function FlashcardDialog({ children, handleSubmit, editCardData }: AppCre
         {children}
       </DialogTrigger>)
       }
-      <DialogContent onEscapeKeyDown={(e: any) => e.preventDefault()} onPointerDownOutside={(e: any) => e.preventDefault()} className="sm:max-w-[425px] bg-white dark:bg-foreground text-black-200" aria-describedby={undefined}>
+      <DialogContent onEscapeKeyDown={(e: any) => e.preventDefault()} onPointerDownOutside={(e: any) => e.preventDefault()} className="overflow-hidden sm:max-w-[425px] bg-white dark:bg-foreground text-black-200" aria-describedby={undefined}>
           <DialogHeader>
             <DialogTitle className="text-2xl">
               {editCardData?._id ? "Edit Card" : "Add a card to your deck"}
@@ -83,11 +83,11 @@ export function FlashcardDialog({ children, handleSubmit, editCardData }: AppCre
           <div className="gap-3 flex flex-col">
               <div>
                 <Label>Front</Label>
-                <Textarea ref={termRef} onKeyDown={handleKeyDown} className="mt-2 !text-base bg-white dark:bg-foreground border-[2px] border-dark-200 resize-none overflow-auto" placeholder="Mitochondria" value={term} onChange={(e) => setTerm(e.target.value)}/>
+                <Textarea ref={termRef} onKeyDown={handleKeyDown} className="mt-2 max-h-[10rem] !text-base bg-white dark:bg-foreground border-[2px] border-dark-200 resize-none overflow-auto" placeholder="Mitochondria" value={term} onChange={(e) => setTerm(e.target.value)}/>
               </div>
               <div>
                 <Label>Back</Label>
-                <Textarea onKeyDown={handleKeyDown} className="mt-2 resize-none overflow-auto !text-base bg-white dark:bg-foreground border-[2px] border-dark-200" placeholder="The powerhouse of the cell." value={definition} onChange={(e) => setDefinition(e.target.value)}/>
+                <Textarea onKeyDown={handleKeyDown} className="mt-2 max-h-[10rem] resize-none overflow-auto !text-base bg-white dark:bg-foreground border-[2px] border-dark-200" placeholder="The powerhouse of the cell." value={definition} onChange={(e) => setDefinition(e.target.value)}/>
               </div>
           </div>
           <DialogFooter className="flex items-center !justify-end">
