@@ -13,6 +13,7 @@ import LearnDeck from "./pages/LearnDeck";
 import CommunityDeckDetails from "./pages/CommunityDeckDetails";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { useEffect } from "react";
+import QuizDeck from "./pages/QuizDeck";
 
 function App() {
 
@@ -36,6 +37,7 @@ function App() {
             <Route path="my-decks" element={<MyDecks />} />
             <Route path="deck/:id" element={<DeckDetails />} />
             <Route path="learn/:id" element={<LearnDeck />} />
+            <Route path="quiz/:id" element={<QuizDeck />} />
   
             <Route path="community-decks" element={<CommunityDecks />} />
             <Route path="community-decks/:id" element={<CommunityDeckDetails/>} />

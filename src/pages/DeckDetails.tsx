@@ -133,7 +133,7 @@ export default function DeckDetails() {
     {status && <AlertComponent message={statusMsg} type={status}></AlertComponent>}
       {
         deck && (deck.public || isOwner) && 
-        <header className="fixed top-[2rem] dark:bg-background bg-background w-full main-container shadow-md !pt-[5rem] !pb-[1rem] !h-fit">
+        <header className="fixed top-[2rem] dark:bg-background bg-background w-full main-container !pt-[5rem] !pb-[1rem] !h-fit">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className={`w-7 h-7 rounded-md`} style={{backgroundColor: deck?.color}}></div>

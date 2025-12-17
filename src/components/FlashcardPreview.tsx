@@ -36,11 +36,6 @@ export default function FlashcardComponent({
             </p>
           </div>
 
-          {/* DIVIDER (hidden on mobile if no space) */}
-          {item.definition && (
-            <div className="hidden md:block w-[1px] my-3 bg-primary"></div>
-          )}
-
           {/* DEFINITION */}
           <div className="md:w-1/2 p-4 flex flex-col justify-between border-t md:border-t-0 md:border-l border-gray-200">
             <p className="whitespace-pre-line text-black-100 md:!text-xl">
