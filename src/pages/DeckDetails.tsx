@@ -119,16 +119,16 @@ export default function DeckDetails() {
   };
 
   return (
-    <main>
+    <main className="h-[80%]">
     {status && <AlertComponent message={"Changes saved"} type={"success"}></AlertComponent>}
       {
         deck && (deck.public || isOwner) && 
-        <header className="fixed top-[2rem] dark:bg-background bg-background w-full main-container shadow-md !pt-[5rem] !pb-[2rem] !h-fit">
+        <header className="fixed top-[2rem] dark:bg-background bg-background w-full main-container shadow-md !pt-[5rem] !pb-[1rem] !h-fit">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className={`w-7 h-7 rounded-md`} style={{backgroundColor: deck?.color}}></div>
               <div className="flex items-center min-w-[70vw] !max-w-[20vw] gap-2">
-                <h1 className="md:text-3xl text-2xl tracking-wide font-semibold truncate">
+                <h1 className="text-2xl tracking-wide font-semibold truncate">
                   {deck?.title}
                 </h1>
                 {deck && <DeckDropdown deck={deck}></DeckDropdown>}
@@ -142,7 +142,7 @@ export default function DeckDetails() {
                 <img className="rounded-full" src={user.imageUrl}></img>
               )}
             </div>
-            <p>{user?.username}</p>
+            <p>{deck.authorName}</p>
           </div>
           <div className="flex items-center gap-2 my-8 flex-wrap">
               { deck.authorID === user._id && (
@@ -172,7 +172,7 @@ export default function DeckDetails() {
 
       {
         deck && ((isOwner == false && deck.public) || (isOwner == true))? 
-        <section className="h-[80%] mt-[16rem] main-container">
+        <section className="h-[80%] mt-[13rem] main-container">
           {!deck.cards || deck.cards.length === 0 ? (
             <article className="w-full h-[80%] items-center justify-center flex-col flex gap-5">
               <h1 className="font-semibold text-4xl text-center">
