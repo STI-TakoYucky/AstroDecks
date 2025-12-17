@@ -36,7 +36,7 @@ export function LearnDeckSettings({children, open, onOpenChange, handleSubmit}: 
               <p>Learn Deck Using Flashcards</p>
             </Card>
 
-            <Card className="hover:!bg-primary hover:!text-white w-full p-10 text-center flex items-center top-0 hover:top-2 hover:shadow-none transition-all ease-in-out duration-100 relative cursor-pointer">
+            <Card onClick={() => handleSubmit("quiz")} className="hover:!bg-primary hover:!text-white w-full p-10 text-center flex items-center top-0 hover:top-2 hover:shadow-none transition-all ease-in-out duration-100 relative cursor-pointer">
               <img className="md:w-[8rem] w-[4rem] h-auto" src={quizIcon}></img>
               <p>Take a Quiz</p>
             </Card>

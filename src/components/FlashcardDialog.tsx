@@ -102,9 +102,9 @@ export function FlashcardDialog({ children, handleSubmit, editCardData }: AppCre
 
             { 
             editCardData?._id ? 
-              <Button className={!term ? "hidden": ""} type="button" onClick={handleBtnOnClick}>Save changes</Button>
+              <Button className={!term || !definition ? "hidden": ""} type="button" onClick={handleBtnOnClick}>Save changes</Button>
               :
-              <Button className={!term ? "hidden": ""} type="button" onClick={handleBtnOnClick}>Confirm</Button>
+              <Button className={!term || !definition ? "hidden": ""} type="button" onClick={handleBtnOnClick}>Confirm</Button>
             }
             </div>
           </DialogFooter>
