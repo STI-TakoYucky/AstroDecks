@@ -110,7 +110,7 @@ export default function DeckDetails() {
 
   const confirmDeckSettingsHandler = (type: string) => {
     if (type == "learn") {
-      navigate(`/learn/${deck?._id}?type=flashcard`)
+      navigate(`/learn/${deck?._id}`)
     } else {
       if(deck && deck?.cards.length >= 4) {
         navigate(`/quiz/${deck?._id}`)

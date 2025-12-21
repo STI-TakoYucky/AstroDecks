@@ -1,9 +1,33 @@
+import QuizComponent from '@/components/QuizComponent';
 import { Button } from '@/components/ui/button';
+import { useAppSelector } from '@/hooks/reduxHooks';
+import type { DeckInterface } from '@/types';
+import _ from 'lodash';
 import { ChevronLeft } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 
 export default function QuizDeck() {
   const navigate = useNavigate();
+  const query = useParams<{ id: string }>();
+  const userDeck = useAppSelector((state) => state.userDecks);
+  const [selectedDeck, setSelectedDeck] = useState<DeckInterface | undefined>();
+
+  useEffect(() => {
+    let deck = userDeck.decks.find(deck => deck._id == query.id)
+    setSelectedDeck(deck);
+  }, [query.id, userDeck])
+
+  //store the cards which serves as the questions and the answer key
+  const cards = _.shuffle(selectedDeck?.cards);
+  const cardsCount = cards?.length;
+  console.log(cardsCount)
+  console.log(cards)
+  //get all the backs of the flashcards, those are the answers
+  // const answers = selectedDeck?.cards.map(card => card.definition);
+
+  //cycling through the questions
+  let currIndex: number = 0
 
   return (
     <main className='main-container'>
@@ -12,7 +36,9 @@ export default function QuizDeck() {
         <ChevronLeft
           size={40}
           className='cursor-pointer hover:bg-slate-100 rounded-full transition-all duration-200 hover:text-black-200'
-          onClick={() => navigate(-1)}
+          onClick={() => {
+            navigate(-1)
+          }}
         />
       </nav>
 
@@ -28,33 +54,9 @@ export default function QuizDeck() {
         </section>
 
         {/* Quiz Content */}
-        <div className='w-full max-w-2xl'>
-          {/* Question Counter */}
-          <div className='text-sm text-gray-500 mb-2'>
-            Question 1 of 10
-          </div>
-
-          {/* Question */}
-          <h2 className='text-2xl font-semibold text-center mb-8'>
-            What is the capital of France?
-          </h2>
-
-          {/* Answer Options */}
-          <div className='space-y-3'>
-            <button className='w-full p-4 text-left border-2 border-gray-300 rounded-lg transition-all duration-200 font-medium hover:border-blue-500 hover:bg-blue-50 cursor-pointer'>
-              London
-            </button>
-            <button className='w-full p-4 text-left border-2 border-gray-300 rounded-lg transition-all duration-200 font-medium hover:border-blue-500 hover:bg-blue-50 cursor-pointer'>
-              Paris
-            </button>
-            <button className='w-full p-4 text-left border-2 border-gray-300 rounded-lg transition-all duration-200 font-medium hover:border-blue-500 hover:bg-blue-50 cursor-pointer'>
-              Berlin
-            </button>
-            <button className='w-full p-4 text-left border-2 border-gray-300 rounded-lg transition-all duration-200 font-medium hover:border-blue-500 hover:bg-blue-50 cursor-pointer'>
-              Madrid
-            </button>
-          </div>
-        </div>
+        {
+          userDeck && selectedDeck && <QuizComponent question={cards[currIndex].term} index={currIndex} length={cardsCount}></QuizComponent>
+        }
 
         {/* Navigation Buttons */}
         <nav className='flex gap-2 w-full justify-center'>
