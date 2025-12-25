@@ -1,7 +1,7 @@
 import QuizComponent from '@/components/QuizComponent';
 import { Button } from '@/components/ui/button';
 import { useAppSelector } from '@/hooks/reduxHooks';
-import type { DeckInterface } from '@/types';
+import type { CardInterface, DeckInterface } from '@/types';
 import _ from 'lodash';
 import { ChevronLeft } from 'lucide-react';
 import { useEffect, useState } from 'react';
@@ -12,27 +12,65 @@ export default function QuizDeck() {
   const query = useParams<{ id: string }>();
   const userDeck = useAppSelector((state) => state.userDecks);
   const [selectedDeck, setSelectedDeck] = useState<DeckInterface | undefined>();
+  const [loading, setLoading] = useState<boolean>(true);
+  // const [error, setError] = useState<boolean>(false);
+  const [progress, setProgress] = useState<number>(0);
+  const [currIndex, setCardIndex] = useState<number>(0);
+  const [cards, setCards] = useState<CardInterface[]>([])
+  const [choices, setChoices] = useState<string[]>([])
 
   useEffect(() => {
     let deck = userDeck.decks.find(deck => deck._id == query.id)
     setSelectedDeck(deck);
+
+    if(deck) {
+      //store the cards which serves as the questions and the answer key
+      setCards(_.shuffle(deck?.cards));
+      //get all the backs of the flashcards and randomly choose 3    
+
+      setChoices(deck.cards.map(card => card.definition!))
+    } else {
+      return;
+    }
+
+    setTimeout(() => setLoading(false), 1000)
   }, [query.id, userDeck])
 
-  //store the cards which serves as the questions and the answer key
-  const cards = _.shuffle(selectedDeck?.cards);
-  const cardsCount = cards?.length;
-  console.log(cardsCount)
-  console.log(cards)
-  //get all the backs of the flashcards, those are the answers
-  // const answers = selectedDeck?.cards.map(card => card.definition);
-
   //cycling through the questions
-  let currIndex: number = 0
+  
+  useEffect(() => {
+      setProgress((currIndex / cards.length) * 100)
+  }, [currIndex])
+
+  const handleIncrement = () => {
+        setCardIndex(prev => {
+            if (prev != cards.length) {
+                return prev + 1
+            }
+            return prev
+        })
+    }
+
+    const handleDecrement = () => {
+        setCardIndex(prev => {
+            if (prev != 0) {
+                return prev - 1
+            }
+            return prev
+        })
+    }
 
   return (
     <main className='main-container'>
-      {/* Header Navigation */}
-      <nav>
+      {
+        loading ? 
+        <div className='flex items-center justify-center w-full h-full flex-col'>
+          <div className="rounded-full border-primary border-t-transparent border-4 w-10 h-10 animate-spin"></div>
+          <h1 className="font-header-font font-semibold text-3xl mt-7">Loading decks...</h1>
+          <p className=" !text-sm dark:text-foreground/80">This may take a while.</p>
+        </div>:
+        <>
+          <nav>
         <ChevronLeft
           size={40}
           className='cursor-pointer hover:bg-slate-100 rounded-full transition-all duration-200 hover:text-black-200'
@@ -47,15 +85,15 @@ export default function QuizDeck() {
         <section className='w-full flex justify-center'>
           <div className='w-[100%] max-w-[40rem] border-2 rounded-md h-6 overflow-hidden !border-foreground'>
             <div
-              className='bg-blue-600 h-full transition-all duration-300'
-              style={{ width: '45%' }}
+              className='bg-blue-600 h-full transition-all duration-300 w-0'
+              style={{ width: `${progress}%` }}
             />
           </div>
         </section>
 
         {/* Quiz Content */}
         {
-          userDeck && selectedDeck && <QuizComponent question={cards[currIndex].term} index={currIndex} length={cardsCount}></QuizComponent>
+          userDeck && selectedDeck && <QuizComponent choices={_.sampleSize(choices.filter(item => item != cards[currIndex].definition), 3)} answer={cards[currIndex].definition!} question={cards[currIndex].term} index={currIndex} length={cards.length}></QuizComponent>
         }
 
         {/* Navigation Buttons */}
@@ -63,17 +101,23 @@ export default function QuizDeck() {
           <Button
             type='button'
             variant='default'
+            onClick={() => handleDecrement()}
           >
             Back
           </Button>
           <Button
             type='button'
             variant='default'
+            onClick={() => handleIncrement()}
           >
             Next
           </Button>
         </nav>
       </section>
+        </>
+      }
+      {/* Header Navigation */}
+      
     </main>
   );
 }

@@ -1,4 +1,6 @@
-export default function QuizComponent({question, index, length}: {question: string, choices?: string[], answer?: string, index: number, length: number}) {
+import _ from "lodash";
+
+export default function QuizComponent({question, index, length, choices, answer}: {question: string, choices: string[], answer: string, index: number, length: number}) {
   return (
     <div key={index} className="w-full max-w-2xl">
       {/* Question Counter */}
@@ -11,7 +13,7 @@ export default function QuizComponent({question, index, length}: {question: stri
 
       {/* Answer Options */}
       <div className="space-y-3">
-        <button className="w-full p-4 text-left border-2 border-gray-300 rounded-lg transition-all duration-200 font-medium hover:border-blue-500 hover:bg-blue-50 cursor-pointer">
+        {/* <button className="w-full p-4 text-left border-2 border-gray-300 rounded-lg transition-all duration-200 font-medium hover:border-blue-500 hover:bg-blue-50 cursor-pointer">
           London
         </button>
         <button className="w-full p-4 text-left border-2 border-gray-300 rounded-lg transition-all duration-200 font-medium hover:border-blue-500 hover:bg-blue-50 cursor-pointer">
@@ -22,7 +24,17 @@ export default function QuizComponent({question, index, length}: {question: stri
         </button>
         <button className="w-full p-4 text-left border-2 border-gray-300 rounded-lg transition-all duration-200 font-medium hover:border-blue-500 hover:bg-blue-50 cursor-pointer">
           Madrid
-        </button>
+        </button> */}
+
+        {_.shuffle([...choices, answer]).map((choice, i) => (
+          <button
+            key={i}
+            className="w-full p-4 text-left border-2 border-gray-300 rounded-lg transition-all duration-200 font-medium hover:border-blue-500 hover:bg-blue-50 cursor-pointer"
+          >
+            {choice}
+          </button>
+        ))}
+
       </div>
     </div>
   );
