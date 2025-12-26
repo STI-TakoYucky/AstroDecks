@@ -1,7 +1,7 @@
 import QuizComponent from '@/components/QuizComponent';
 import { Button } from '@/components/ui/button';
 import { useAppSelector } from '@/hooks/reduxHooks';
-import type { CardInterface, DeckInterface } from '@/types';
+import type { CardInterface } from '@/types';
 import _ from 'lodash';
 import { ChevronLeft } from 'lucide-react';
 import { useEffect, useState } from 'react';
@@ -11,17 +11,16 @@ export default function QuizDeck() {
   const navigate = useNavigate();
   const query = useParams<{ id: string }>();
   const userDeck = useAppSelector((state) => state.userDecks);
-  const [selectedDeck, setSelectedDeck] = useState<DeckInterface | undefined>();
   const [loading, setLoading] = useState<boolean>(true);
   // const [error, setError] = useState<boolean>(false);
   const [progress, setProgress] = useState<number>(0);
   const [currIndex, setCardIndex] = useState<number>(0);
   const [cards, setCards] = useState<CardInterface[]>([])
   const [choices, setChoices] = useState<string[]>([])
+  const [score, setScore] = useState<number>(0)
 
   useEffect(() => {
     let deck = userDeck.decks.find(deck => deck._id == query.id)
-    setSelectedDeck(deck);
 
     if(deck) {
       //store the cards which serves as the questions and the answer key
@@ -51,13 +50,9 @@ export default function QuizDeck() {
         })
     }
 
-    const handleDecrement = () => {
-        setCardIndex(prev => {
-            if (prev != 0) {
-                return prev - 1
-            }
-            return prev
-        })
+    const handleScore = (isCorrect: boolean) => {
+      isCorrect && setScore(prev => prev + 1);
+      handleIncrement();
     }
 
   return (
@@ -80,24 +75,26 @@ export default function QuizDeck() {
         />
       </nav>
 
-      <section className='flex flex-col items-center justify-around h-full'>
+      <section className='flex flex-col items-center justify-start gap-10 mt-10 h-full'>
         {/* Progress Bar */}
-        <section className='w-full flex justify-center'>
-          <div className='w-[100%] max-w-[40rem] border-2 rounded-md h-6 overflow-hidden !border-foreground'>
+        <section className='w-full flex justify-start items-center flex-col'>
+          <div className='w-[100%]  max-w-2xl border-2 rounded-md h-6 overflow-hidden !border-foreground'>
             <div
               className='bg-blue-600 h-full transition-all duration-300 w-0'
               style={{ width: `${progress}%` }}
             />
           </div>
+          <div className='w-full max-w-2xl mt-7'>
+            <p>Score: {score} / {cards.length}</p>
+          </div>
         </section>
 
         {/* Quiz Content */}
-        {
-          userDeck && selectedDeck && <QuizComponent choices={_.sampleSize(choices.filter(item => item != cards[currIndex].definition), 3)} answer={cards[currIndex].definition!} question={cards[currIndex].term} index={currIndex} length={cards.length}></QuizComponent>
-        }
+        
+        <QuizComponent handleScore={handleScore} choices={_.sampleSize(choices.filter(item => item != cards[currIndex].definition), 3)} answer={cards[currIndex].definition!} question={cards[currIndex].term} index={currIndex} length={cards.length}></QuizComponent>
 
         {/* Navigation Buttons */}
-        <nav className='flex gap-2 w-full justify-center'>
+        {/* <nav className='flex gap-2 w-full justify-center'>
           <Button
             type='button'
             variant='default'
@@ -112,11 +109,10 @@ export default function QuizDeck() {
           >
             Next
           </Button>
-        </nav>
+        </nav> */}
       </section>
         </>
       }
-      {/* Header Navigation */}
       
     </main>
   );

@@ -1,8 +1,15 @@
 import _ from "lodash";
+import { useEffect, useState } from "react";
 
-export default function QuizComponent({question, index, length, choices, answer}: {question: string, choices: string[], answer: string, index: number, length: number}) {
+export default function QuizComponent({question, index, length, choices, answer, handleScore}: {question: string, choices: string[], answer: string, index: number, length: number, handleScore: (isCorrect: boolean) => void}) {
+
+  const [shuffledChoices, setShuffledChoices] = useState<string[]>([]); 
+  useEffect(() => {
+    setShuffledChoices(_.shuffle([...choices, answer]))
+  }, [index])
+
   return (
-    <div key={index} className="w-full max-w-2xl">
+    <div className="w-full max-w-2xl">
       {/* Question Counter */}
       <div className="text-sm text-gray-500 mb-2">Question {index + 1} of {length}</div>
 
@@ -26,9 +33,11 @@ export default function QuizComponent({question, index, length, choices, answer}
           Madrid
         </button> */}
 
-        {_.shuffle([...choices, answer]).map((choice, i) => (
+        {shuffledChoices.map((choice) => (
           <button
-            key={i}
+          onClick={() => {
+             handleScore(choice == answer ? true : false)
+          }}
             className="w-full p-4 text-left border-2 border-gray-300 rounded-lg transition-all duration-200 font-medium hover:border-blue-500 hover:bg-blue-50 cursor-pointer"
           >
             {choice}
