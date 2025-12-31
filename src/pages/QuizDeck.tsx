@@ -39,18 +39,21 @@ export default function QuizDeck() {
   //cycling through the questions
   
   useEffect(() => {
-      setProgress((currIndex / cards.length) * 100)
-      currIndex == cards.length - 1 && setQuizFinished(true);
-  }, [currIndex])
+    if (cards.length === 0) return;
 
-  const handleIncrement = () => {
-        setCardIndex(prev => {
-            if (prev != cards.length - 1) {
-                return prev + 1
-            }
-            return prev
-        })
-    }
+    setProgress(((currIndex + 1) / cards.length) * 100);
+  }, [currIndex, cards.length]);
+
+    const handleIncrement = () => {
+      setCardIndex(prev => {
+        if (prev === cards.length - 1) {
+          setQuizFinished(true);
+          return prev;
+        }
+        return prev + 1;
+      });
+    };
+
 
     const handleScore = (isCorrect: boolean) => {
       isCorrect && setScore(prev => prev + 1);
@@ -79,12 +82,41 @@ export default function QuizDeck() {
         </div>:
         <>
         { isQuizFinished ? 
-        <div className='text-center'>
-            <h1 className="text-4xl font-semibold mb-10">
-                Great Job!
-            </h1>
-            <Button variant={"default"} onClick={() => navigate(-1)}>Return to deck</Button>
-            <Button variant={"default"} onClick={() => restartQuiz()}>Quiz Again</Button>
+        <div className="flex flex-col items-center justify-center h-full text-center gap-6">
+          <h1 className="text-4xl font-semibold">
+            Great Job! 🎉
+          </h1>
+
+          <p className="text-lg font-medium">
+            You scored
+            <span className="mx-2 text-2xl font-bold text-blue-600">
+              {score}
+            </span>
+            out of
+            <span className="mx-2 text-2xl font-bold">
+              {cards.length}
+            </span>
+          </p>
+
+          <p className="text-sm text-muted-foreground">
+            Keep practicing to improve your score.
+          </p>
+
+          <div className="flex gap-4 mt-4">
+            <Button
+              variant="outline"
+              onClick={() => navigate(-1)}
+            >
+              Return to deck
+            </Button>
+
+            <Button
+              variant="default"
+              onClick={restartQuiz}
+            >
+              Quiz Again
+            </Button>
+          </div>
         </div>
         :
           <>
