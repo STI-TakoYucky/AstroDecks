@@ -8,7 +8,7 @@ export function AlertComponent({
   type: string | null;
 }) {
   return (
-    <div className="fixed text-left z-50 bottom-[2rem] right-5 md:right-[3rem] bg-white shadow-md md:w-[15rem] h-[5rem] dark:text-black-200 flex-col rounded-md flex overflow-hidden">
+    <div className="fixed text-left z-50 bottom-[2rem] right-5 md:right-[3rem] bg-white shadow-md md:w-[15rem] h-fit dark:text-black-200 flex-col rounded-md flex overflow-hidden">
       <div
         className={`w-full h-5 ${
           type === "success" ? "bg-green-300" : "bg-red-300"

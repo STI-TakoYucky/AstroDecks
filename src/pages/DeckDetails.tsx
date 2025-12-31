@@ -23,6 +23,7 @@ export default function DeckDetails() {
   const [hasUnsavedChanges, setUnsavedChanges] = useState(false);
   const [isPublic, setPublic] = useState<boolean | null>(null)
   const [status, setStatus] = useState<"success" | "error" | null>(null)
+  const [statusMsg, setStatusMsg] = useState<string>("");
 
   const userDeck = useAppSelector((state) => state.userDecks.decks.find(deck => deck._id === query.id));
   // the reference to all the user's decks narrwed down to the specific deck
@@ -90,6 +91,7 @@ export default function DeckDetails() {
       setDeck(userDeck)
       setUnsavedChanges(false);
       setStatus("success")
+      setStatusMsg("Changes Saved")
       setTimeout(() => {
         setStatus(null)
       }, 1000);
@@ -106,28 +108,37 @@ export default function DeckDetails() {
     setLearnDeckSettings(true)
   }
 
-  const confirmDeckSettingsHandler = (definitionsFirst: boolean) => {
-    if (definitionsFirst) {
-      navigate(`/learn/${deck?._id}?definitionsFirst=true`)
-    } else {
+  const confirmDeckSettingsHandler = (type: string) => {
+    if (type == "learn") {
       navigate(`/learn/${deck?._id}`)
+    } else {
+      if(deck && deck?.cards.length >= 4) {
+        navigate(`/quiz/${deck?._id}`)
+      } else {
+        setStatus("error")
+        setStatusMsg("Atleast 4 cards is needed.")
+        setTimeout(() => {
+          setStatus(null)
+        }, 3000);
+      }
     }
   }
+
   const handleSubmit = (cardData: CardInterface) => {
     dispatch(addCard({ _id: deck?._id, cardData: cardData }));
   };
 
   return (
-    <main className="main-container">
-    {status && <AlertComponent message={"Changes saved"} type={"success"}></AlertComponent>}
+    <main className="h-[80%]">
+    {status && <AlertComponent message={statusMsg} type={status}></AlertComponent>}
       {
         deck && (deck.public || isOwner) && 
-        <header className="mb-8">
+        <header className="fixed top-[2rem] dark:bg-background bg-background w-full main-container !pt-[5rem] !pb-[1rem] !h-fit">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className={`w-7 h-7 rounded-md`} style={{backgroundColor: deck?.color}}></div>
               <div className="flex items-center min-w-[70vw] !max-w-[20vw] gap-2">
-                <h1 className="md:text-3xl text-2xl tracking-wide font-semibold truncate">
+                <h1 className="text-2xl tracking-wide font-semibold truncate">
                   {deck?.title}
                 </h1>
                 {deck && <DeckDropdown deck={deck}></DeckDropdown>}
@@ -141,16 +152,9 @@ export default function DeckDetails() {
                 <img className="rounded-full" src={user.imageUrl}></img>
               )}
             </div>
-            <p>{user?.username}</p>
+            <p>{deck.authorName}</p>
           </div>
-        </header>
-      }
-
-      {
-        deck && ((isOwner == false && deck.public) || (isOwner == true))? 
-        <section className="h-[80%]">
-
-          <div className="flex items-center gap-2 mb-8 flex-wrap">
+          <div className="flex items-center gap-2 my-8 flex-wrap">
               { deck.authorID === user._id && (
                 <>
                   <Button
@@ -173,6 +177,12 @@ export default function DeckDetails() {
               <Button onClick={learnDeckHandler}>Learn Deck</Button>
               <LearnDeckSettings title={deck.title} open={learnDeckSettings} onOpenChange={setLearnDeckSettings} desc={""} handleSubmit={confirmDeckSettingsHandler}></LearnDeckSettings>
             </div>
+        </header>
+      }
+
+      {
+        deck && ((isOwner == false && deck.public) || (isOwner == true))? 
+        <section className="h-[80%] mt-[13rem] main-container">
           {!deck.cards || deck.cards.length === 0 ? (
             <article className="w-full h-[80%] items-center justify-center flex-col flex gap-5">
               <h1 className="font-semibold text-4xl text-center">
