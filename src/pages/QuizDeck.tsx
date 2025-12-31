@@ -18,6 +18,7 @@ export default function QuizDeck() {
   const [cards, setCards] = useState<CardInterface[]>([])
   const [choices, setChoices] = useState<string[]>([])
   const [score, setScore] = useState<number>(0)
+  const [isQuizFinished, setQuizFinished] = useState<boolean>(false);
 
   useEffect(() => {
     let deck = userDeck.decks.find(deck => deck._id == query.id)
@@ -39,11 +40,12 @@ export default function QuizDeck() {
   
   useEffect(() => {
       setProgress((currIndex / cards.length) * 100)
+      currIndex == cards.length - 1 && setQuizFinished(true);
   }, [currIndex])
 
   const handleIncrement = () => {
         setCardIndex(prev => {
-            if (prev != cards.length) {
+            if (prev != cards.length - 1) {
                 return prev + 1
             }
             return prev
@@ -52,7 +54,18 @@ export default function QuizDeck() {
 
     const handleScore = (isCorrect: boolean) => {
       isCorrect && setScore(prev => prev + 1);
-      handleIncrement();
+
+      setTimeout(() => {
+        handleIncrement();
+      }, 1000)
+    }
+
+    const restartQuiz = () => {
+      setCards(_.shuffle(cards)) //reshuffle the deck
+      setScore(0)
+      setCardIndex(0);
+      setQuizFinished(false)
+      setProgress(0)
     }
 
   return (
@@ -65,52 +78,47 @@ export default function QuizDeck() {
           <p className=" !text-sm dark:text-foreground/80">This may take a while.</p>
         </div>:
         <>
+        { isQuizFinished ? 
+        <div className='text-center'>
+            <h1 className="text-4xl font-semibold mb-10">
+                Great Job!
+            </h1>
+            <Button variant={"default"} onClick={() => navigate(-1)}>Return to deck</Button>
+            <Button variant={"default"} onClick={() => restartQuiz()}>Quiz Again</Button>
+        </div>
+        :
+          <>
           <nav>
-        <ChevronLeft
-          size={40}
-          className='cursor-pointer hover:bg-slate-100 rounded-full transition-all duration-200 hover:text-black-200'
-          onClick={() => {
-            navigate(-1)
-          }}
-        />
-      </nav>
-
-      <section className='flex flex-col items-center justify-start gap-10 mt-10 h-full'>
-        {/* Progress Bar */}
-        <section className='w-full flex justify-start items-center flex-col'>
-          <div className='w-[100%]  max-w-2xl border-2 rounded-md h-6 overflow-hidden !border-foreground'>
-            <div
-              className='bg-blue-600 h-full transition-all duration-300 w-0'
-              style={{ width: `${progress}%` }}
+            <ChevronLeft
+              size={40}
+              className='cursor-pointer hover:bg-slate-100 rounded-full transition-all duration-200 hover:text-black-200'
+              onClick={() => {
+                navigate(-1)
+              }}
             />
-          </div>
-          <div className='w-full max-w-2xl mt-7'>
-            <p>Score: {score} / {cards.length}</p>
-          </div>
-        </section>
+          </nav>
 
-        {/* Quiz Content */}
-        
-        <QuizComponent handleScore={handleScore} choices={_.sampleSize(choices.filter(item => item != cards[currIndex].definition), 3)} answer={cards[currIndex].definition!} question={cards[currIndex].term} index={currIndex} length={cards.length}></QuizComponent>
+          <section className='flex flex-col items-center justify-start gap-10 mt-10 h-full'>
+            {/* Progress Bar */}
+            <section className='w-full flex justify-start items-center flex-col'>
+              <div className='w-[100%]  max-w-2xl border-2 rounded-md h-6 overflow-hidden !border-foreground'>
+                <div
+                  className='bg-blue-600 h-full transition-all duration-300 w-0'
+                  style={{ width: `${progress}%` }}
+                />
+              </div>
+              <div className='w-full max-w-2xl mt-7'>
+                <p>Score: {score} / {cards.length}</p>
+              </div>
+            </section>
 
-        {/* Navigation Buttons */}
-        {/* <nav className='flex gap-2 w-full justify-center'>
-          <Button
-            type='button'
-            variant='default'
-            onClick={() => handleDecrement()}
-          >
-            Back
-          </Button>
-          <Button
-            type='button'
-            variant='default'
-            onClick={() => handleIncrement()}
-          >
-            Next
-          </Button>
-        </nav> */}
-      </section>
+            {/* Quiz Content */}
+            
+            <QuizComponent handleScore={handleScore} choices={_.sampleSize(choices.filter(item => item != cards[currIndex].definition), 3)} answer={cards[currIndex].definition!} question={cards[currIndex].term} index={currIndex} length={cards.length}></QuizComponent>
+            
+          </section>
+          </>
+        }
         </>
       }
       

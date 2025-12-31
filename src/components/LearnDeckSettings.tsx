@@ -11,7 +11,6 @@ import type { AppCustomAlert } from "@/types"
 // import { useState } from "react";
 import studyIcon from '/images/study-icon.png'
 import quizIcon from '/images/quiz-icon.png'
-import { Card } from "./ui/card";
 
 export function LearnDeckSettings({children, open, onOpenChange, handleSubmit}: AppCustomAlert) {
 
@@ -31,15 +30,15 @@ export function LearnDeckSettings({children, open, onOpenChange, handleSubmit}: 
                 <p>Back first</p>
             </div> */}
 
-            <Card onClick={() => handleSubmit("learn")} className="hover:!bg-primary hover:!text-white bg-background flex items-center w-full p-10 text-center top-0 hover:top-2 hover:shadow-none transition-all ease-in-out duration-100 relative cursor-pointer">
+            <div onClick={() => handleSubmit("learn")} className="dark:bg-foreground dark:text-background flex-col gap-6 rounded-xl border-2 border-primary !text-primary-200 py-6 shadow-lg hover:!bg-primary hover:!text-white bg-background flex items-center w-full p-10 text-center top-0 hover:top-2 hover:shadow-none transition-all ease-in-out duration-100 relative cursor-pointer">
               <img className="md:w-[8rem] w-[4rem] h-auto" src={studyIcon}></img>
               <p>Learn Deck Using Flashcards</p>
-            </Card>
+            </div>
 
-            <Card onClick={() => handleSubmit("quiz")} className="hover:!bg-primary hover:!text-white w-full p-10 text-center flex items-center top-0 hover:top-2 hover:shadow-none transition-all ease-in-out duration-100 relative cursor-pointer">
+            <div onClick={() => handleSubmit("quiz")} className="dark:bg-foreground dark:text-background flex-col gap-6 rounded-xl border-2 border-primary !text-primary-200 py-6 shadow-lg hover:!bg-primary hover:!text-white w-full p-10 text-center flex items-center top-0 hover:top-2 hover:shadow-none transition-all ease-in-out duration-100 relative cursor-pointer">
               <img className="md:w-[8rem] w-[4rem] h-auto" src={quizIcon}></img>
               <p>Take a Quiz</p>
-            </Card>
+            </div>
           </DialogDescription>
         </DialogHeader>
         {/* <DialogFooter>
