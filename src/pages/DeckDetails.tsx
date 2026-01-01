@@ -152,7 +152,7 @@ export default function DeckDetails() {
                 <img className="rounded-full" src={user.imageUrl}></img>
               )}
             </div>
-            <p>{deck.authorName}</p>
+            <p>{isOwner ? user.username : deck.authorName}</p>
           </div>
           <div className="flex items-center gap-2 my-8 flex-wrap">
               { deck.authorID === user._id && (

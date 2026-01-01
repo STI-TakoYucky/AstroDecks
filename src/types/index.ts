@@ -16,7 +16,7 @@ export interface DeckInterface {
   _id?: string //the id is optional because it is created in the backend
   title: string,
   authorID: string,
-  authorName: string,
+  authorName?: string,
   color?: string,
   public: boolean
   cards: CardInterface[]
