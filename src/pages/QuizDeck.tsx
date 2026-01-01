@@ -2,6 +2,7 @@ import QuizComponent from '@/components/QuizComponent';
 import { Button } from '@/components/ui/button';
 import { useAppSelector } from '@/hooks/reduxHooks';
 import type { CardInterface } from '@/types';
+import axios from 'axios';
 import _ from 'lodash';
 import { ChevronLeft } from 'lucide-react';
 import { useEffect, useState } from 'react';
@@ -21,19 +22,25 @@ export default function QuizDeck() {
   const [isQuizFinished, setQuizFinished] = useState<boolean>(false);
 
   useEffect(() => {
-    let deck = userDeck.decks.find(deck => deck._id == query.id)
 
-    if(deck) {
-      //store the cards which serves as the questions and the answer key
-      setCards(_.shuffle(deck?.cards));
-      //get all the backs of the flashcards and randomly choose 3    
+    const fetchDeck = async () => {
+      const { data: deck } = await axios.get(`${import.meta.env.VITE_API_URL}/api/decks/deck/${query.id}`);
 
-      setChoices(deck.cards.map(card => card.definition!))
-    } else {
-      return;
+      if(deck) {
+        //store the cards which serves as the questions and the answer key
+        setCards(_.shuffle(deck?.cards));
+        //get all the backs of the flashcards and randomly choose 3    
+
+        setChoices(deck.cards.map((card: CardInterface) => card.definition!))
+      } else {
+        return;
+      }
+
+      setTimeout(() => setLoading(false), 1000)
     }
 
-    setTimeout(() => setLoading(false), 1000)
+    fetchDeck()
+    
   }, [query.id, userDeck])
 
   //cycling through the questions
