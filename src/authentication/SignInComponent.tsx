@@ -47,8 +47,8 @@ export default function SignInComponent() {
       <Card className="dark:bg-foreground text-black-200 rounded-md">
         <CardHeader className="text-center">
           <CardTitle className="text-4xl font-header-font text-center flex items-center justify-center gap-2 mb-2"><div><img src={Logo} alt="AstroDecksLogo" className="min-w-[3rem] h-[3rem] "/> </div>AstroDecks</CardTitle>
-          <CardDescription>
-            A free flashcard app for every student
+          <CardDescription className="text-md">
+            Reach for your cards! 🌠
           </CardDescription>
         </CardHeader>
         <CardContent>
