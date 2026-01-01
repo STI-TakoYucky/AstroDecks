@@ -142,7 +142,7 @@ export default function QuizDeck() {
             <section className='w-full flex justify-start items-center flex-col'>
               <div className='w-[100%]  max-w-2xl border-2 rounded-md h-6 overflow-hidden !border-foreground'>
                 <div
-                  className='bg-blue-600 h-full transition-all duration-300 w-0'
+                  className='bg-green-600 h-full transition-all duration-300 w-0'
                   style={{ width: `${progress}%` }}
                 />
               </div>
