@@ -18,8 +18,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const [authenticated, setAuthenticated] = useState<boolean | null>(null);
 
     useEffect(() => {
-        console.log(authenticated)
-
         const check = async () => {
         try {
             await axios.get(`${import.meta.env.VITE_API_URL}/api/protected`, {

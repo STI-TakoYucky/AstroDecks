@@ -1,4 +1,4 @@
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import MyDecks from "./pages/MyDecks";
 import SignIn from "./authentication/SignIn";
 import SignUp from "./authentication/SignUp";
@@ -11,6 +11,7 @@ import DeckDetails from "./pages/DeckDetails";
 import "./global.css";
 import LearnDeck from "./pages/LearnDeck";
 import CommunityDeckDetails from "./pages/CommunityDeckDetails";
+import LandingPage from "./pages/LandingPage";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { useEffect } from "react";
 import QuizDeck from "./pages/QuizDeck";
@@ -28,21 +29,23 @@ function App() {
   return (
       <Provider store={store}>
         <Routes>
-          <Route path="/sign-in" element={<SignIn />} />
-          <Route path="/sign-up" element={<SignUp />} />
-  
-          <Route path="/" element={<ProtectedRoute><Layout /></ProtectedRoute>}>
-            <Route path="/" element={<Navigate to="/my-decks" replace />} />
-  
-            <Route path="my-decks" element={<MyDecks />} />
-            <Route path="deck/:id" element={<DeckDetails />} />
-            <Route path="learn/:id" element={<LearnDeck />} />
-            <Route path="quiz/:id" element={<QuizDeck />} />
-  
-            <Route path="community-decks" element={<CommunityDecks />} />
-            <Route path="community-decks/:id" element={<CommunityDeckDetails/>} />
-          </Route>
-        </Routes>
+        {/* Public routes */}
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/sign-in" element={<SignIn />} />
+        <Route path="/sign-up" element={<SignUp />} />
+
+        {/* Protected routes */}
+        <Route element={<ProtectedRoute ><Layout></Layout></ProtectedRoute>}>
+            <Route path="/my-decks" element={<MyDecks />} />
+            <Route path="/deck/:id" element={<DeckDetails />} />
+            <Route path="/learn/:id" element={<LearnDeck />} />
+            <Route path="/quiz/:id" element={<QuizDeck />} />
+
+            <Route path="/community-decks" element={<CommunityDecks />} />
+            <Route path="/community-decks/:id" element={<CommunityDeckDetails />} />
+        </Route>
+      </Routes>
+
       </Provider>
     );
 }

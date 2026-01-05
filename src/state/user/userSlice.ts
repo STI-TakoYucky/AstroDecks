@@ -7,7 +7,6 @@ export const fetchUser = createAsyncThunk(
     try {
 
       const { data } = await axios.post(`${import.meta.env.VITE_API_URL}/api/users`, {_id});
-      console.log(data)
       return data;
     } catch (error: any) {
       return thunkAPI.rejectWithValue(error.response.data);
