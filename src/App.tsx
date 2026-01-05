@@ -1,4 +1,4 @@
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import MyDecks from "./pages/MyDecks";
 import SignIn from "./authentication/SignIn";
 import SignUp from "./authentication/SignUp";
