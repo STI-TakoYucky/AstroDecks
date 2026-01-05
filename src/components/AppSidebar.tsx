@@ -9,8 +9,10 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  useSidebar,
 } from "@/components/ui/sidebar";
 import { Link } from "react-router-dom";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 // Menu items.
 const items = [
@@ -27,6 +29,15 @@ const items = [
 ];
 
 export function AppSidebar() {
+  const { toggleSidebar } = useSidebar()
+  const isMobile = useIsMobile()
+
+  const handleNavigation = () => {
+    if (isMobile) {
+      toggleSidebar()
+    }
+  }
+
   return (
     <Sidebar>
       <SidebarContent className="transition-theme">
@@ -38,8 +49,8 @@ export function AppSidebar() {
             <SidebarMenu>
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton className="text-base md:text-lg mb-2 font-body-font dark:hover:bg-black-100 active:text-black-200" asChild>
-                    <Link to={item.url} className="px-5 py-5 rounded-none">
+                  <SidebarMenuButton className="text-base md:text-lg mb-2 font-body-font dark:hover:bg-black-100" asChild>
+                    <Link to={item.url} onClick={handleNavigation} className="px-5 py-5 rounded-none">
                       <span className="w-5 h-5">
                         <item.icon className="w-full h-full stroke-[2]" />
                       </span>
