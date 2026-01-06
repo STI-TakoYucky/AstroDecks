@@ -3,20 +3,22 @@ import Deck from "@/components/Deck";
 import { useEffect, useState, type FormEvent } from "react";
 import { useAppDispatch, useAppSelector } from "@/hooks/reduxHooks";
 import { fetchDecks, pushDeck } from "@/state/userDecks/userDecksSlice";
-import { Plus, Search } from "lucide-react";
+import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+} from "@/components/ui/carousel";
 
 export default function MyDecks() {
 
   const [open, onOpenChange] = useState<boolean>(false)
-  const [searchTerm, setSearchTerm] = useState<string>("")
   const [selectedCategory, setSelectedCategory] = useState<string>("all")
   const decks = useAppSelector(state => state.userDecks)
   const user = useAppSelector(state => state.user)
   const dispatch = useAppDispatch()
   const [title, setTitle] = useState<string>("Untitled")
-  const DECKS_LIMIT = 5
 
   useEffect(() => {
     if (!user._id) return
@@ -57,7 +59,7 @@ export default function MyDecks() {
             </AppDialog>
           </div>
           
-          <div className="relative flex-1 max-w-xs">
+          {/* <div className="relative flex-1 max-w-xs">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <Input
               placeholder="Search decks..."
@@ -65,11 +67,11 @@ export default function MyDecks() {
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
-          </div>
+          </div> */}
         </section>
 
-        <section className="w-full mb-6 flex items-center justify-between">
-          <div></div>
+        <section className="w-full mb-4 flex items-center justify-between h-fit">
+          <div><p className="font-medium !text-2xl">Recent Decks</p></div>
           <Button
             variant="outline"
             className="font-medium"
@@ -78,13 +80,22 @@ export default function MyDecks() {
           </Button>
         </section>
 
-        <section className="grid grid-cols-[repeat(auto-fit,minmax(250px,1fr))] lg:grid-cols-[repeat(auto-fit,minmax(250px,17rem))] gap-7">
-          {decks?.decks.slice(0, DECKS_LIMIT).map((data: any) => {
-            return <Deck key={data._id} deck={data}></Deck>;
-          })}
+        <section className="max-w-screen">
+          <Carousel opts={{
+            dragFree: true,
+          }}>
+            <CarouselContent className="max-w-3xl snap-none py-3">
+              {decks?.decks.slice(0, decks.decks.length).map((data: any) => (
+                <CarouselItem key={data._id} className="min-w-[250px] max-w-[250px]">
+                  <Deck deck={data} />
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+          </Carousel>
         </section>
 
-        <section className="w-full mt-10 pt-6 border-t">
+        <section className="w-full mt-10 pt-6 ">
+          <div><p className="font-medium !text-2xl mb-6">Categories</p></div>
           <div className="flex flex-wrap gap-2">
             <Button
               variant={selectedCategory === "all" ? "default" : "outline"}
