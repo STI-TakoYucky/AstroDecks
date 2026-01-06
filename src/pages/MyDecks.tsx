@@ -1,5 +1,5 @@
 import AppDialog from "@/components/ReusableComponents/AppInputDialog";
-import Deck from "@/components/DeckComponent/Deck";
+import Deck from "@/components/DeckComponents/Deck";
 import { useEffect, useState, type FormEvent } from "react";
 import { useAppDispatch, useAppSelector } from "@/hooks/reduxHooks";
 import { fetchDecks, pushDeck } from "@/state/userDecks/userDecksSlice";
@@ -14,7 +14,7 @@ import {
 export default function MyDecks() {
 
   const [open, onOpenChange] = useState<boolean>(false)
-  const [selectedCategory, setSelectedCategory] = useState<string>("all")
+  // const [selectedCategory, setSelectedCategory] = useState<string>("all")
   const decks = useAppSelector(state => state.userDecks)
   const user = useAppSelector(state => state.user)
   const dispatch = useAppDispatch()
@@ -114,7 +114,7 @@ export default function MyDecks() {
           )}
         </section>
 
-        <section className="w-full mt-10 pt-6 ">
+        {/* <section className="w-full mt-10 pt-6 ">
           <div><p className="font-medium !text-2xl mb-6">Categories</p></div>
           <div className="flex flex-wrap gap-2">
             <Button
@@ -153,7 +153,7 @@ export default function MyDecks() {
               History
             </Button>
           </div>
-        </section>
+        </section> */}
       </main>
     </>
   );
