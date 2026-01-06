@@ -2,7 +2,7 @@ import { useContext, useEffect } from "react"
 import SignInComponent from "./SignInComponent"
 import { AuthContext } from "@/components/AuthProvider"
 import { useNavigate } from "react-router-dom"
-import LoadingComponent from "@/components/LoadingComponent"
+import LoadingComponent from "@/components/ReusableComponents/LoadingComponent"
 
 function App() {
 

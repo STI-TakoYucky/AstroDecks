@@ -5,14 +5,14 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { ChevronDown, ExternalLink, SquarePen, Trash } from "lucide-react";
-import AppDialog from "./AppInputDialog";
+import AppDialog from "../ReusableComponents/AppInputDialog";
 import { useState, type FormEvent } from "react";
 import type { DeckInterface } from "@/types";
 import { useAppDispatch, useAppSelector } from "@/hooks/reduxHooks";
 import { deleteDeck, renameDeck } from "@/state/userDecks/userDecksSlice";
-import { CustomAlertDialog } from "./CustomAlertDialog";
+import { CustomAlertDialog } from "../ReusableComponents/CustomAlertDialog";
 import { useNavigate } from "react-router-dom";
-import AppShareLinkDialog from "./AppShareLinkDialog";
+import AppShareLinkDialog from "./ShareDeckComponent";
 
 export function DeckDropdown({ deck }: { deck: DeckInterface }) {
   const dispatch = useAppDispatch();

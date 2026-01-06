@@ -6,9 +6,9 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Label } from "@radix-ui/react-label";
-import { Button } from "./ui/button";
-import { DialogFooter, DialogHeader } from "./ui/dialog";
-import { Input } from "./ui/input";
+import { Button } from "../ui/button";
+import { DialogFooter, DialogHeader } from "../ui/dialog";
+import { Input } from "../ui/input";
 
 
 export default function AppShareLinkDialog({open, onOpenChange, url}: {open: boolean, onOpenChange: React.Dispatch<React.SetStateAction<boolean>>, url: string}) {

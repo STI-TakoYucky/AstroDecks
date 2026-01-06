@@ -1,4 +1,4 @@
-import DeckComponent from "@/components/Deck";
+import DeckComponent from "@/components/DeckComponent/Deck";
 import { useEffect, useState } from "react";
 import { useAppSelector } from "@/hooks/reduxHooks";
 import type { DeckInterface } from "@/types";

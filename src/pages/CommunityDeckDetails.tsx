@@ -1,5 +1,5 @@
-import { DeckDropdown } from "@/components/DeckDropdown";
-import FlashcardsPreview from "@/components/FlashcardPreview";
+import { DeckDropdown } from "@/components/DeckComponent/DeckDropdown";
+import FlashcardsPreview from "@/components/FlashcardComponent/FlashcardPreview";
 import { Button } from "@/components/ui/button";
 import { useAppSelector } from "@/hooks/reduxHooks";
 import type { CardInterface, DeckInterface, UserInterface } from "@/types";

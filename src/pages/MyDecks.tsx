@@ -1,5 +1,5 @@
-import AppDialog from "@/components/AppInputDialog";
-import Deck from "@/components/Deck";
+import AppDialog from "@/components/ReusableComponents/AppInputDialog";
+import Deck from "@/components/DeckComponent/Deck";
 import { useEffect, useState, type FormEvent } from "react";
 import { useAppDispatch, useAppSelector } from "@/hooks/reduxHooks";
 import { fetchDecks, pushDeck } from "@/state/userDecks/userDecksSlice";
@@ -19,6 +19,8 @@ export default function MyDecks() {
   const user = useAppSelector(state => state.user)
   const dispatch = useAppDispatch()
   const [title, setTitle] = useState<string>("Untitled")
+  const DECKS_LIMIT = 10
+  const [showAll, setShowAll] = useState<boolean>(false)
 
   useEffect(() => {
     if (!user._id) return
@@ -75,23 +77,41 @@ export default function MyDecks() {
           <Button
             variant="outline"
             className="font-medium"
+            onClick={() => setShowAll((s) => !s)}
+            aria-expanded={showAll}
           >
-            See More
+            {showAll ? "See Less" : "See More"}
           </Button>
         </section>
 
-        <section className="max-w-screen">
-          <Carousel opts={{
-            dragFree: true,
-          }}>
-            <CarouselContent className="max-w-3xl snap-none py-3">
-              {decks?.decks.slice(0, decks.decks.length).map((data: any) => (
-                <CarouselItem key={data._id} className="min-w-[250px] max-w-[250px]">
-                  <Deck deck={data} />
-                </CarouselItem>
+        <section className="w-full">
+          {showAll ? (
+            <section className="py-3 grid grid-cols-[repeat(auto-fit,minmax(250px,1fr))] lg:grid-cols-[repeat(auto-fit,minmax(250px,17rem))] gap-7">
+              {decks?.decks.map((data: any) => (
+                <Deck key={data._id} deck={data} />
               ))}
-            </CarouselContent>
-          </Carousel>
+            </section>
+          ) : (
+            <section className="max-w-screen">
+              <Carousel
+                opts={{
+                  dragFree: true,
+                }}
+              >
+                <CarouselContent className="max-w-3xl snap-none py-3">
+                  {(() => {
+                    const all = decks?.decks || [];
+                    const shown = all.slice(0, DECKS_LIMIT);
+                    return shown.map((data: any) => (
+                      <CarouselItem key={data._id} className="min-w-[250px] max-w-[250px]">
+                        <Deck deck={data} />
+                      </CarouselItem>
+                    ));
+                  })()}
+                </CarouselContent>
+              </Carousel>
+            </section>
+          )}
         </section>
 
         <section className="w-full mt-10 pt-6 ">
