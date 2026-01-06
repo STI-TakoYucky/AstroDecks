@@ -2,7 +2,7 @@ import { Navigate } from "react-router-dom";
 import { useContext } from "react";
 import type { JSX } from "react/jsx-runtime";
 import { AuthContext } from "./AuthProvider";
-import LoadingComponent from "./LoadingComponent";
+import LoadingComponent from "./ReusableComponents/LoadingComponent";
 
 export default function ProtectedRoute({ children }: { children: JSX.Element }) {
 

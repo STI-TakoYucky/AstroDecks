@@ -7,9 +7,9 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Label } from "@radix-ui/react-label";
-import { Button } from "./ui/button";
-import { DialogFooter, DialogHeader } from "./ui/dialog";
-import { Input } from "./ui/input";
+import { Button } from "../ui/button";
+import { DialogFooter, DialogHeader } from "../ui/dialog";
+import { Input } from "../ui/input";
 import type { AppDialogProps } from "@/types";
 
 export default function AppInputDialog({ handleSubmit, inputFields, dialogTitle, children, open, onOpenChange, description }: AppDialogProps) {

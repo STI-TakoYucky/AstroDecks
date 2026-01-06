@@ -1,6 +1,6 @@
-import { FlashcardDialog } from "@/components/FlashcardDialog";
-import { DeckDropdown } from "@/components/DeckDropdown";
-import FlashcardComponent from "@/components/FlashcardPreview";
+import { FlashcardDialog } from "@/components/FlashcardComponents/FlashcardDialog";
+import { DeckDropdown } from "@/components/DeckComponents/DeckDropdown";
+import FlashcardComponent from "@/components/FlashcardComponents/FlashcardPreview";
 import { Button } from "@/components/ui/button";
 import { useAppDispatch, useAppSelector } from "@/hooks/reduxHooks";
 import { addCard, changeVisibility, updateDeckCards } from "@/state/userDecks/userDecksSlice";
@@ -9,8 +9,8 @@ import { LockKeyhole, Plus, UnlockKeyhole } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { debounce } from "lodash";
-import { LearnDeckSettings } from "@/components/LearnDeckSettings";
-import { AlertComponent } from "@/components/Alert";
+import { LearnDeckSettings } from "@/components/DeckComponents/LearnDeckSettings";
+import { AlertComponent } from "@/components/ReusableComponents/Alert";
 import axios from "axios";
 
 export default function DeckDetails() {

@@ -39,7 +39,7 @@ export default function Deck({ deck }: { deck: DeckInterface }) {
   return (
     <div
       onClick={deckOnClickHandler}
-      className="hover:translate-y-2 cursor-pointer hover:bg-slate-50 transition-all duration-200 dark:bg-foreground rounded-md overflow-hidden min-h-[10rem] shadow-sm relative"
+      className="select-none hover:translate-y-2 cursor-pointer hover:bg-slate-50 transition-all duration-200 bg-white dark:bg-foreground rounded-md overflow-hidden min-h-[10rem] shadow-lg dark:shadow-sm relative"
     >
       <div className="px-5 py-4">
         <div className="flex items-center gap-2 mb-3 justify-between">

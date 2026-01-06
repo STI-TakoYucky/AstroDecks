@@ -3,7 +3,7 @@ import type { CardInterface, DeckInterface } from "@/types";
 import { FlashcardDialog } from "./FlashcardDialog";
 import { useAppDispatch, useAppSelector } from "@/hooks/reduxHooks";
 import { deleteCard, editCard } from "@/state/userDecks/userDecksSlice";
-import { CustomAlertDialog } from "./CustomAlertDialog";
+import { CustomAlertDialog } from "../ReusableComponents/CustomAlertDialog";
 
 export default function FlashcardComponent({
   cards,

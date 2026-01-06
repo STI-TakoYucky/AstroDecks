@@ -1,4 +1,4 @@
-import { AppSidebar } from "@/components/AppSidebar";
+import { AppSidebar } from "@/components/ReusableComponents/AppSidebar";
 import { SidebarProvider, useSidebar } from "@/components/ui/sidebar";
 import { Outlet, useNavigate } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
@@ -68,7 +68,7 @@ function InnerLayout() {
         <header
           className={`transition-theme flex items-center ${
             isMobile ? "justify-between" : "justify-end"
-          } px-5 bg-background min-h-[5rem] sticky top-0 border-b-[1px] gap-5 z-40`}
+          } px-5 bg-background min-h-[5rem] sticky top-0 border-b-[2px] gap-5 z-40`}
         >
           {isMobile && (
             <PanelLeft className="cursor-pointer" onClick={toggleSidebar} />

@@ -125,7 +125,7 @@ const userDecksSlice = createSlice({
         .addCase(pushDeck.fulfilled, (state, action) => {
           const data = action.payload;
           state.loading = false;
-          state.decks.push(data)
+          state.decks.unshift(data)
         })
         .addCase(pushDeck.rejected, (state, action) => {
           const data: any = action.payload

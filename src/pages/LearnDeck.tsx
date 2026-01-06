@@ -1,4 +1,4 @@
-import Flashcard from '@/components/Flashcard';
+import Flashcard from '@/components/FlashcardComponents/Flashcard';
 import { Button } from '@/components/ui/button';
 import { useAppSelector } from '@/hooks/reduxHooks';
 import type { CardInterface } from '@/types';

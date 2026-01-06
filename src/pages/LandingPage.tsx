@@ -1,7 +1,7 @@
-import { Hero } from '@/components/LandingPage/Hero';
-import { Features } from '@/components/LandingPage/Features';
-import { CTA } from '@/components/LandingPage/CTA';
-import { Navigation } from '@/components/LandingPage/Navigation';
+import { Hero } from '@/components/LandingPageComponents/Hero';
+import { Features } from '@/components/LandingPageComponents/Features';
+import { CTA } from '@/components/LandingPageComponents/CTA';
+import { Navigation } from '@/components/LandingPageComponents/Navigation';
 
 export default function LandingPage() {
   return (

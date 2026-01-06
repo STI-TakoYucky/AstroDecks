@@ -1,7 +1,7 @@
 import { Label } from "@radix-ui/react-label";
-import { Button } from "./ui/button";
-import { Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "./ui/dialog";
-import { Textarea } from "./ui/textarea";
+import { Button } from "../ui/button";
+import { Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog";
+import { Textarea } from "../ui/textarea";
 import type { AppCreateCardDialogProps } from "@/types";
 import { useEffect, useRef, useState } from "react";
 import { nanoid } from 'nanoid';
