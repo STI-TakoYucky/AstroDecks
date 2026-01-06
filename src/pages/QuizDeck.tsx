@@ -1,4 +1,4 @@
-import QuizComponent from '@/components/QuizComponent/QuizComponent';
+import QuizComponent from '@/components/QuizComponents/QuizComponent';
 import { Button } from '@/components/ui/button';
 import { useAppSelector } from '@/hooks/reduxHooks';
 import type { CardInterface } from '@/types';
